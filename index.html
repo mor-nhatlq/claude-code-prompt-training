@@ -1,0 +1,1091 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quy trình áp dụng thử AI Workflow cho E2E_TC001 · 41 slide từ một dự án E2E thật</title>
+<meta name="description" content="Học cách viết prompt hiệu quả cho Claude Code qua 42 prompt thật trong dự án E2E testing V1_QA_Automation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@500;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#faf7f2; --ink:#16161a; --muted:#5d5d63; --accent:#c5341e; --accent-soft:#f6d6cf;
+  --card:#ffffff; --line:#e7e1d6; --shadow:0 1px 0 rgba(0,0,0,.04),0 18px 40px -22px rgba(20,20,30,.18);
+  --term-bg:#1a1a22; --term-bar:#262631; --term-text:#e8e3d6; --term-muted:#8d8a93;
+  --prompt:#f59e0b; --response:#7fc88f; --term-line:#2f2f3b;
+  --kbd-bg:#fff;
+  --display:"Be Vietnam Pro",-apple-system,BlinkMacSystemFont,"Segoe UI Variable","Segoe UI",system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Source Serif Pro",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI","Roboto","Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono","JetBrains Mono","Cascadia Code","Consolas","Liberation Mono",monospace;
+}
+:root[data-theme="dark"]{
+  --bg:#0e0d14; --ink:#f4efe5; --muted:#9a98a4; --accent:#f59e0b; --accent-soft:#3a2812;
+  --card:#1a1922; --line:#26252f; --shadow:0 1px 0 rgba(255,255,255,.03),0 18px 40px -22px rgba(0,0,0,.55);
+  --term-bg:#0a0a10; --term-bar:#191923; --term-text:#e8e3d6; --term-muted:#8d8a93;
+  --prompt:#f59e0b; --response:#7fc88f; --term-line:#222230;
+  --kbd-bg:#26252f;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme]){
+    --bg:#0e0d14; --ink:#f4efe5; --muted:#9a98a4; --accent:#f59e0b; --accent-soft:#3a2812;
+    --card:#1a1922; --line:#26252f; --shadow:0 1px 0 rgba(255,255,255,.03),0 18px 40px -22px rgba(0,0,0,.55);
+    --term-bg:#0a0a10; --term-bar:#191923; --term-text:#e8e3d6; --term-muted:#8d8a93;
+    --prompt:#f59e0b; --response:#7fc88f; --term-line:#222230;
+    --kbd-bg:#26252f;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--sans);overflow:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{font-size:17px;line-height:1.5}
+.deck{position:fixed;inset:0;display:grid;place-items:center;padding:40px 48px 76px}
+.slide{position:absolute;inset:40px 48px 76px;display:none;flex-direction:column;justify-content:center;max-width:1180px;margin:0 auto;left:0;right:0;animation:fade .35s ease both}
+.slide[data-active]{display:flex}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.eyebrow .dot{display:inline-block;width:6px;height:6px;background:var(--accent);border-radius:50%;margin-right:8px;vertical-align:middle}
+.eyebrow b{color:var(--accent);font-weight:700}
+h1.title{font-family:var(--display);font-weight:700;font-size:clamp(34px,5vw,64px);line-height:1.08;letter-spacing:-.02em;margin:0 0 16px}
+h2.title{font-family:var(--display);font-weight:700;font-size:clamp(24px,3vw,36px);line-height:1.18;letter-spacing:-.015em;margin:0 0 12px}
+h3{font-family:var(--display);font-weight:600;font-size:20px;line-height:1.3;margin:0 0 8px}
+p{margin:0 0 10px}
+p.lead{font-size:19px;color:var(--muted);max-width:920px}
+.insight{margin-top:14px;font-size:15px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 16px}
+.insight b{color:var(--accent)}
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:99px;background:var(--accent-soft);color:var(--accent);margin:0 4px 4px 0;letter-spacing:.04em;font-weight:600;text-transform:uppercase}
+:root[data-theme="dark"] .tag{background:rgba(245,158,11,.16);color:var(--accent)}
+.grid{display:grid;gap:16px}
+.grid-2{grid-template-columns:1fr 1fr}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow)}
+.card h4{margin:0 0 6px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);font-weight:700;font-family:var(--mono)}
+.card p{font-size:15px;color:var(--muted);margin:0}
+.card p.ink{color:var(--ink)}
+ul,ol{padding-left:20px;margin:0 0 10px}
+li{margin:4px 0}
+
+/* terminal mockup */
+.term{background:var(--term-bg);border-radius:12px;overflow:hidden;box-shadow:0 24px 60px -18px rgba(0,0,0,.45),0 4px 12px -4px rgba(0,0,0,.25);border:1px solid var(--term-line);margin:8px 0}
+.term-bar{background:var(--term-bar);padding:8px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--term-line)}
+.term-bar .d{width:11px;height:11px;border-radius:50%}
+.term-bar .d.r{background:#ff5f57}
+.term-bar .d.y{background:#febc2e}
+.term-bar .d.g{background:#28c840}
+.term-bar .t{flex:1;text-align:center;font-family:var(--mono);font-size:11px;color:var(--term-muted);letter-spacing:.04em}
+.term-body{padding:16px 22px 18px;font-family:var(--mono);font-size:14.5px;line-height:1.55;color:var(--term-text)}
+.term-logo{color:var(--term-muted);font-size:11px;margin-bottom:10px;white-space:pre;line-height:1.3}
+.term-logo b{color:#cba6f7;font-weight:normal}
+.prompt{display:flex;gap:10px;padding:8px 0;align-items:flex-start;border-top:1px solid var(--term-line)}
+.prompt:first-of-type{border-top:0;padding-top:6px}
+.prompt .p{color:var(--prompt);font-weight:700;flex-shrink:0;font-size:15px}
+.prompt .t{white-space:pre-wrap;word-break:break-word;color:var(--term-text);flex:1}
+.resp{display:flex;gap:10px;padding:8px 0 4px;align-items:flex-start;border-top:1px solid var(--term-line);margin-top:6px}
+.resp .r{color:var(--response);flex-shrink:0;font-size:15px;font-weight:700}
+.resp .t{white-space:pre-wrap;word-break:break-word;color:var(--term-text);flex:1;opacity:.92}
+.resp .t .em{color:#f5d97a;font-style:normal}
+.resp .t .mute{color:var(--term-muted)}
+.resp .t code,.prompt .t code{background:rgba(255,255,255,.07);padding:1px 5px;border-radius:4px;font-size:13px}
+.diff-line{font-family:var(--mono);font-size:13px;white-space:pre;padding:0 2px;border-radius:3px}
+.diff-line.del{background:rgba(255,90,80,.16);color:#ff9c8e}
+.diff-line.add{background:rgba(120,200,140,.14);color:#9be3ad}
+.kbd{display:inline-block;font-family:var(--mono);font-size:12px;padding:2px 8px;background:var(--kbd-bg);border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;color:var(--ink)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+tr:hover td{background:var(--card)}
+.big-num{font-family:var(--display);font-size:42px;font-weight:700;color:var(--accent);line-height:1;letter-spacing:-.02em}
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:24px;align-items:center}
+.cover{background:linear-gradient(135deg,var(--accent) 0%,#7a1c0d 100%);color:#fffaf3;border-radius:18px;padding:56px 52px;position:relative;overflow:hidden}
+:root[data-theme="dark"] .cover{background:linear-gradient(135deg,#3a2812 0%,#0e0d14 100%)}
+.cover::after{content:"";position:absolute;right:-80px;top:-80px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.08)}
+.cover .eyebrow{color:rgba(255,255,255,.7)}
+.cover h1.title{color:#fffaf3}
+.cover p,.cover .lead{color:rgba(255,255,255,.85)}
+.cover .tag{background:rgba(255,255,255,.14);color:#fffaf3}
+.muted{color:var(--muted)}
+.tiny{font-size:12.5px}
+.center{text-align:center}
+.attribution{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:8px;letter-spacing:.02em}
+
+.bar{position:fixed;top:0;left:0;right:0;height:3px;background:transparent;z-index:50}
+.bar > i{display:block;height:100%;background:var(--accent);width:0%;transition:width .35s ease}
+.nav{position:fixed;bottom:14px;right:20px;display:flex;align-items:center;gap:8px;z-index:50;font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+.nav button{appearance:none;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 11px;font-family:inherit;font-size:12.5px;cursor:pointer;transition:all .15s}
+.nav button:hover{border-color:var(--accent);color:var(--accent)}
+.counter{padding:0 6px;letter-spacing:.06em}
+.theme{position:fixed;top:14px;right:20px;display:flex;gap:5px;z-index:50;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:3px}
+.theme button{appearance:none;border:0;background:transparent;color:var(--muted);font-family:var(--mono);font-size:10.5px;padding:4px 9px;border-radius:99px;cursor:pointer;letter-spacing:.08em;text-transform:uppercase}
+.theme button.active{background:var(--accent);color:#fffaf3}
+.snum{position:fixed;bottom:16px;left:20px;font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;z-index:40}
+
+@media (max-width:1000px){
+  .deck{padding:28px 22px 76px}
+  .slide{inset:28px 22px 76px}
+  .grid-3,.grid-4{grid-template-columns:1fr 1fr}
+  .split{grid-template-columns:1fr;gap:16px}
+  body{font-size:15.5px}
+  .term-body{font-size:13px}
+}
+@media (max-width:640px){
+  .grid-3,.grid-4{grid-template-columns:1fr}
+  h1.title{font-size:30px}
+  .cover{padding:32px 24px}
+}
+@media print{
+  html,body{overflow:visible;height:auto}
+  .deck{position:static;display:block;padding:0}
+  .slide{position:relative;inset:auto;display:flex !important;page-break-after:always;min-height:100vh;padding:36px}
+  .nav,.theme,.bar,.snum{display:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="bar"><i id="progress"></i></div>
+<div class="theme" role="group" aria-label="Theme">
+  <button data-theme="light">Sáng</button>
+  <button data-theme="dark">Tối</button>
+  <button data-theme="system" class="active">Hệ thống</button>
+</div>
+<div class="snum"><span id="snum">01 / 40</span></div>
+<div class="nav">
+  <button id="prev" aria-label="Slide trước">←</button>
+  <span class="counter"><span id="cur">1</span> / 40</span>
+  <button id="next" aria-label="Slide sau">→</button>
+</div>
+
+<main class="deck" id="deck">
+
+<!-- ============ S1 — BÌA ============ -->
+<section class="slide" data-active>
+  <div class="cover">
+    <div class="eyebrow"><span class="dot"></span>Tài liệu nội bộ · DataCultr · V1_QA_Automation</div>
+    <h1 class="title">Quy trình áp dụng thử AI Workflow<br>cho E2E_TC001</h1>
+    <p class="lead" style="max-width:780px">42 prompt thật + 40 slide phân tích. Liệt kê cách NhatLQ đã viết prompt để viết E2E test code cho TC_001 như thế nào.</p>
+    <div style="margin-top:24px">
+      <span class="tag">Cho dev/QA quen Claude Code &amp; tương tác với AI nói chung</span>
+      <span class="tag">45–60 phút</span>
+      <span class="tag">Tiếng Việt</span>
+    </div>
+    <p class="tiny" style="margin-top:28px;color:rgba(255,255,255,.65);font-family:var(--mono);letter-spacing:.04em">Nguồn: <code style="background:rgba(255,255,255,.1);padding:1px 6px;border-radius:4px">journal-e2e-purchase-flow.md</code> · phiên chat ngày 14/05/2026</p>
+  </div>
+  <p class="tiny muted center" style="margin-top:14px">Bấm <span class="kbd">→</span> để bắt đầu · <span class="kbd">F</span> toàn màn hình · <span class="kbd">1-9</span> nhảy nhanh</p>
+</section>
+
+<!-- ============ S2 — MỤC LỤC ============ -->
+<section class="slide">
+  <div class="eyebrow"><span class="dot"></span>Mục lục</div>
+  <h2 class="title">Các phần chính</h2>
+  <div class="grid grid-2" style="margin-top:14px">
+    <div class="card"><h4>1 · Mở đầu</h4><p>Bối cảnh dự án, sự khác biệt giữa Claude Code và AI chat thông thường, bốn khái niệm cốt lõi.</p><p class="tiny muted" style="margin-top:6px">Slide 3 → 6</p></div>
+    <div class="card"><h4>2 · Phase 1 — Brainstorm</h4><p>19 prompt khám phá phạm vi, duyệt thiết kế, mở feature branch.</p><p class="tiny muted" style="margin-top:6px">Slide 6 → 21</p></div>
+    <div class="card"><h4>3 · Phase 2 — Live debug</h4><p>14 prompt chạy thật trên UAT, gỡ lỗi iframe Razorpay, popup ngân hàng.</p><p class="tiny muted" style="margin-top:6px">Slide 22 → 32</p></div>
+    <div class="card"><h4>4 · Phase 3 — Polish</h4><p>8 prompt review kiểu PR, phát hiện dead code, đẩy ngược thiết kế.</p><p class="tiny muted" style="margin-top:6px">Slide 33 → 38</p></div>
+    <div class="card" style="grid-column:span 2"><h4>5 · Tổng hợp</h4><p>10 prompt patterns đúc kết, 5 anti-pattern, cheat sheet 5 mẫu prompt cho mọi tình huống.</p><p class="tiny muted" style="margin-top:6px">Slide 39 → 41</p></div>
+  </div>
+</section>
+
+<!-- ============ S3 — BỐI CẢNH ============ -->
+<section class="slide">
+  <div class="eyebrow"><span class="dot"></span>Bối cảnh dự án</div>
+  <h2 class="title">Tự động hoá một test case xuyên ba site</h2>
+  <div class="split" style="margin-top:14px">
+    <div>
+      <p class="lead">Repo <code>V1_QA_Automation</code> có khung Playwright + Page Object Model nhưng chưa có spec E2E. Test case <code>DD_E2E_TC_001</code> đi xuyên ba site độc lập.</p>
+      <ul style="margin-top:14px">
+        <li><b>Trang mua bảo hiểm (SPP)</b> — khách nhập SĐT Philippines, IMEI, gói, thanh toán qua Razorpay sandbox.</li>
+        <li><b>Admin</b> — nhân viên verify đơn hàng, đẩy sang KYC.</li>
+        <li><b>Customer Portal</b> — khách login bằng OTP, kiểm tra đơn hàng.</li>
+      </ul>
+    </div>
+    <div class="grid" style="gap:12px">
+      <div class="card"><div class="big-num">3</div><p style="margin-top:2px">Site độc lập, codebase khác nhau</p></div>
+      <div class="card"><div class="big-num">~90s</div><p style="margin-top:2px">Mỗi lần chạy E2E trên UAT</p></div>
+      <div class="card"><div class="big-num">42</div><p style="margin-top:2px">Prompt người dùng từ A tới Z</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S4 — CLAUDE CODE KHÁC GÌ ============ -->
+<section class="slide">
+  <div class="eyebrow"><span class="dot"></span>Khái niệm cốt lõi · 1/2</div>
+  <h2 class="title">Chat tool vs Coding agent: đổi tư duy trước khi đổi cú pháp</h2>
+  <p class="ink" style="font-size:17px;max-width:920px;margin:0 0 18px">Trước khi học cách viết prompt, cần thấy <b>Claude Code khác công cụ bạn đang dùng ở đâu</b>. ChatGPT/Copilot là <b>trợ lý ngồi cạnh</b> — bạn hỏi, nó trả lời, bạn copy. Claude Code là <b>đồng nghiệp tự chạy trong máy bạn</b> — đọc file, sửa file, chạy lệnh, ghi TODO. Hai mô hình khác nhau khiến cách viết prompt cũng phải khác để phù hợp hơn với luồng Agentic Workflow.</p>
+  <table style="margin-top:4px">
+    <thead><tr>
+      <th style="width:22%">Khía cạnh</th>
+      <th><span class="tag" style="background:rgba(120,120,140,.14);color:var(--muted)">CHAT TOOL</span><br><span style="font-family:var(--display);font-weight:600;font-size:14px;color:var(--ink);text-transform:none;letter-spacing:0">ChatGPT · Copilot</span></th>
+      <th><span class="tag">CODING AGENT</span><br><span style="font-family:var(--display);font-weight:600;font-size:14px;color:var(--ink);text-transform:none;letter-spacing:0">Claude Code CLI</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Hình thức tương tác</td><td>Chat thiếu ngữ cảnh: Bạn dán code vào và đưa yêu cầu, nó trả code ra. Không có ngữ cảnh dự án.</td><td>Agent chạy trong terminal, <b> hiểu được ngữ cảnh dự án để đọc và ghi trực tiếp file.</b></td></tr>
+      <tr><td>Output thực tế</td><td>Đoạn code trong khung chat — bạn phải copy về.</td><td>File đã sửa, commit đã tạo, test đã chạy — kết quả nằm trong file của repo luôn.</td></tr>
+      <tr><td>Trí nhớ</td><td>Ngắn hạn, không đặc thù cho coding.</td><td>File system + TODO bền vững — <b>thoát rồi mở lại vẫn còn</b>.</td></tr>
+      <tr><td>Quy trình</td><td>Mỗi câu trả lời tự do, không khung.</td><td>Có <b>skill</b> (quy trình tái dùng) và <b>agent con</b> (planner, tester...) phân việc.</td></tr>
+      <tr><td>Vai trò của bạn</td><td>Người đặt câu hỏi.</td><td>Người <b>chỉ đạo, duyệt và quyết định</b> — agent thi hành.</td></tr>
+    </tbody>
+  </table>
+  <div class="insight"><b>Vì vậy:</b> prompt cho Claude Code không phải câu hỏi — đó là <b>chỉ thị giao việc cho đồng nghiệp giỏi nhưng thiếu ngữ cảnh</b>. Đủ ngữ cảnh → agent làm chính xác. Thiếu → agent đoán mò và bạn dọn hậu quả.</div>
+</section>
+
+<!-- ============ S5 — 4 VIÊN GẠCH ============ -->
+<section class="slide">
+  <div class="eyebrow"><span class="dot"></span>Khái niệm cốt lõi · 2/2</div>
+  <h2 class="title">Bốn viên gạch dựng nên mọi phiên</h2>
+  <div class="grid grid-4" style="margin-top:14px">
+    <div class="card"><h4>Skill</h4><p class="ink"><b>Gói quy trình</b> tái sử dụng.</p><p style="margin-top:6px"><code>/morkit:brainstorming</code> mở chế độ khám phá. <code>/morkit:writing-plans</code> tạo plan có phase trước khi code.</p></div>
+    <div class="card"><h4>Agent</h4><p class="ink"><b>Phân thân chuyên môn</b> có ngữ cảnh riêng.</p><p style="margin-top:6px"><code>planner</code>, <code>tester</code>, <code>code-reviewer</code>, <code>debugger</code> — Claude uỷ thác việc.</p></div>
+    <div class="card"><h4>Plan</h4><p class="ink"><b>Tài liệu thiết kế</b> viết trước khi gõ code.</p><p style="margin-top:6px">Một <code>plan.md</code> tổng quan + nhiều <code>phase-XX-*.md</code> chi tiết.</p></div>
+    <div class="card"><h4>TaskCreate</h4><p class="ink"><b>TODO bền vững</b> xuyên session.</p><p style="margin-top:6px">Thoát terminal mở lại, TODO vẫn còn. Không phải lịch sử chat.</p></div>
+  </div>
+  <div class="insight">Hiểu bốn thứ này, mọi prompt bạn viết sẽ rõ mục đích: <b>kích hoạt skill, gọi agent, tạo plan, hay cập nhật task</b>.</div>
+</section>
+
+<!-- ============ S6 — P1 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #1</div>
+  <h2 class="title">Mở đầu</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">~/Documents/Git/DataCultr — claude</span></div>
+    <div class="term-body">
+<div class="term-logo"> ▐▛███▜▌   <b>Claude Code v2.1.141</b>
+▝▜█████▛▘  Opus 4.7 · Claude Team
+  ▘▘ ▝▝    ~/Documents/Git/DataCultr</div>
+      <div class="prompt"><span class="p">❯</span><span class="t">Nói chuyện bằng tiếng Việt nha
+
+Tôi muốn làm một flow E2E testing cho 1 flow, trên 3 website.
+
+Chạy skill /morkit:brainstorming để tìm hiểu thêm về task này cùng tôi</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Skill(morkit:brainstorming) loaded.</span>
+
+Vào explore mode. Cùng đào task này.
+Vài câu hỏi mở đầu:
+1. 3 website là gì? (cùng codebase 3 env / 3 sản phẩm / 3 site ngoài / multi-tenant?)
+2. Flow gì? (Login? Checkout? Signup?)
+3. 3 site giống nhau bao nhiêu? 4. Stack? 5. Output? 6. Data + auth?
+<span class="mute">Trả lời ý nào trước cũng được.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Ba yếu tố trong một dòng:</b> ngôn ngữ (tiếng Việt), mục tiêu cao (E2E 3 site), trao skill (<code>/morkit:brainstorming</code>). Đặt khung làm việc ngay từ prompt đầu — Claude biết bước đầu là khám phá, không phải code.</div>
+</section>
+
+<!-- ============ S8 — P2 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #2</div>
+  <h2 class="title">Trả lời sáu câu hỏi theo sáu số</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — brainstorming</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">1. 3 Website Admin, Customer-portal, website mua bảo hiểm
+2. flow đã có trong file @DD_TestCases.xlsx
+3. 3 site riêng biệt, logic khác nhau hoàn toàn vì nó phục vụ các mục đích khác nhau
+4. Stack có trong repo @V1_QA_Automation/
+5. Output phải verify được output trong file TestCases
+6. Data có sẵn, sẽ cung cấp
+
+Ngoài ra, chạy E2E testing trên 3 URL riêng biệt được định nghĩa sẵn được không?</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Đọc repo trước rồi trả lời.</span> Read 3 files, listed 1 directory.
+
+<b>Được.</b> Playwright Projects: mỗi project 1 baseURL.
+<code>projects: [
+  { name: 'admin',  use: { baseURL: process.env.ADMIN_URL } },
+  { name: 'portal', use: { baseURL: process.env.PORTAL_URL } },
+  { name: 'buy',    use: { baseURL: process.env.BUY_URL } },
+]</code>
+<span class="mute">Hiện trạng: Playwright 1.46, TS, POM pattern (src/actions/pageObjects). 1 BASE_URL duy nhất → cần tách 3.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Trả lời theo số thứ tự:</b> Claude hỏi gì, mình trả lời đúng số đó. Ví dụ: <code>@DD_TestCases.xlsx</code>, <code>@V1_QA_Automation/</code> trỏ trực tiếp file thay vì mô tả miệng. Câu hỏi mới gắn cuối với "Ngoài ra…" — không xen ngang.</div>
+</section>
+
+<!-- ============ S8.5 — Câu Claude hỏi lại (interlude) ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Trước Prompt #3 · Câu Claude hỏi lại</div>
+  <h2 class="title">Claude tiếp tục câu hỏi lúc brainstorming</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — follow-up questions</span></div>
+    <div class="term-body">
+      <div class="resp"><span class="r">⏺</span><span class="t">Câu hỏi tiếp:
+
+<b>1.</b> File <code>DD_TestCases.xlsx</code> — chưa attach được. Cần biết:
+   - Cấu trúc cột? (TC_ID, Steps, Expected, Site?)
+   - Số lượng case mỗi site?
+   - "Verify output" = check UI text, API response, hay DB state?
+   → Paste 2-3 row mẫu được không? Hoặc convert csv.
+
+<b>2.</b> 3 URL cụ thể. Cùng <code>insurance.mor.com.vn</code> subpath hay 3 domain riêng?
+
+<b>3.</b> Flow là <i>1 flow xuyên 3 site</i>, hay <i>1 flow riêng mỗi site</i>?
+   [Case A] Admin tạo product → Portal customer thấy → Buy site mua (share state)
+   [Case B] 3 flow độc lập, chỉ chung framework
+
+<b>4.</b> Login mỗi site khác nhau? (admin SSO? portal OTP? buy guest?)
+
+<b>5.</b> Tổ chức folder mong muốn — <code>tests/ui/{admin,portal,buy}/</code> hay 1 file <code>e2e-flow.spec.ts</code> xuyên 3 site?
+
+<span class="mute">Trả lời được câu nào trước cứ trả lời.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Vì sao đây là vấn đề:</b> Claude bung <b>5 câu hỏi đa tầng</b> ngay sau khi đọc repo. Mỗi câu lại có 3-4 sub-question. Trả lời tự do dễ lệch, dễ bỏ sót, dễ quên câu nào còn pending. Đó chính là lý do prompt tiếp theo bạn sẽ thấy: <i>"Cho hết câu hỏi vào TODO, bắt đầu đi cùng tôi từng câu hỏi một nha"</i>.</div>
+</section>
+
+<!-- ============ S9 — P3 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #3</div>
+  <h2 class="title">Ra lệnh <i>cách</i> làm, không chỉ <i>cái</i> làm</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — process control</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Cho hết câu hỏi vào TODO, bắt đầu đi cùng tôi từng câu hỏi một nha</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">TaskCreate: Q1–Q5</span>
+Q1: in-progress · Q2–Q5: pending
+
+TODO xong. Bắt đầu <b>Q1</b>.
+
+Q1: Cấu trúc DD_TestCases.xlsx
+File .xlsx không attach được. Cần 1 trong 3 cách:
+Option A — Paste 2-3 row mẫu trực tiếp
+Option B — Convert sang CSV
+Option C — Cho path xlsx, tôi đọc bằng tool</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Pattern <i>process-level instruction</i>:</b> Claude bắn 6 câu cùng lúc — dễ quên. Bạn ra lệnh <code>TaskCreate</code> + "đi từng câu một" để khoá trật tự. Đây là điều ChatGPT không làm được vì không có TODO bền vững.</div>
+</section>
+
+<!-- ============ S10 — P4 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #4</div>
+  <h2 class="title">Trỏ tài nguyên bằng <code>@</code>, không mô tả miệng</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — file attach</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Đọc file CSV này nhé: @DD_TestCases.csv</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Read DD_TestCases.csv (713 lines)</span>
+
+Đọc xong. 1 case <code>DD_E2E_TC_001</code>, Critical, 1 flow xuyên 3 site (Case A).
+
+Phân tích: Step 1-3 → Admin (Plan/Band/Creative) · Step 4-11 → SPP Buy
+Step 12 → Admin search · Expected #9 → Portal login
+
+Test data: Plan E2E_PLN01, Phone +91-9876543210, IMEI 354897123456789, Samsung Galaxy S22 25000 INR.
+<span class="mute">Q1+Q3 xong. Sang Q2: 3 URL.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Pattern <i>resource pointer</i>:</b> ký hiệu <code>@&lt;path&gt;</code> bảo Claude đọc thẳng file đó. Không cần copy/paste nội dung — agent có quyền vào file system thật.</div>
+</section>
+
+<!-- ============ S11 — P5 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #5</div>
+  <h2 class="title">Resume sau khi <code>/exit</code> — TODO không mất</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — new session</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">/exit</span></div>
+      <div class="resp"><span class="r">⎿</span><span class="t" style="color:var(--term-muted)">Bye!</span></div>
+      <div class="prompt"><span class="p">❯</span><span class="t">Cập nhật lại TODO đi, tôi vừa thoát session</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">TODO state còn nguyên — không cần tạo lại. Tổng kết:
+
+<b>Đã chốt (1, 2, 3, 8)</b>: cấu trúc test case, 3 URL UAT, 1 flow xuyên 3 site, bỏ Step 1-3.
+<b>Còn lại</b>: Q4 (login), Q5 (folder), Q6 (test data), Q7 (payment).
+
+Tiếp Q4 — 3 ý cần trả lời:
+1. Admin creds + MFA? 2. Buy guest? 3. Portal OTP cố định?</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Pattern <i>pause/resume awareness</i>:</b> mở session mới chỉ cần một câu — Claude đọc lại TaskCreate, summarize, tiếp tục ngay câu hỏi đang dở. Khác hẳn ChatGPT phải kể lại ngữ cảnh từ đầu.</div>
+</section>
+
+<!-- ============ S12 — P6 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #6</div>
+  <h2 class="title">Cung cấp credentials gọn gàng theo số</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — Q4 auth</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">1. TK admin có mật khẩu khác: <code>Admin@234</code>. Không MFA, dùng được trên UAT
+2. Đúng, chỉ nhập thông tin theo website
+3. Login qua số điện thoại. Sẽ cung cấp SDT không cần OTP.</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Q4 xong. Sang Q5: Folder structure.</span>
+
+2 phương án tổ chức POM:
+<b>A</b> — tách theo site: <code>pageObjects/admin/</code> · <code>pageObjects/buy/</code> · <code>pageObjects/portal/</code>
+<b>B</b> — phẳng, 1 thư mục, prefix tên: <code>AdminLoginPage.ts</code>, <code>BuyLandingPage.ts</code>
+<span class="mute">Đề xuất A vì isolation tốt hơn, dễ split test owner.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Pattern lặp lại:</b> 3 câu trả lời theo 3 số. Chi tiết quan trọng (mật khẩu, OTP rule) đi thẳng vào prompt — không hỏi "cần gì nữa không" rồi mới đưa.</div>
+</section>
+
+<!-- ============ S13 — P7 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #7</div>
+  <h2 class="title">Khi Claude bày menu — chọn bằng một ký tự</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — Q5 folder</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">A</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Chọn A: POM tách theo site.</span>
+
+Tiếp nửa sau Q5: cấu trúc spec file.
+<b>1</b> — 1 spec duy nhất <code>purchase-flow.spec.ts</code> chạy serial 3 phase
+<b>2</b> — 3 spec riêng (admin/buy/portal) chạy độc lập, share fixture
+<b>3</b> — Hybrid: 1 spec orchestrator gọi sub-spec từng site
+
+<span class="mute">Đề xuất 1 vì TC này là 1 flow xuyên 3 site — state share dễ.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Pattern <i>one-letter decision</i>:</b> mỗi round-trip với agent <b>rẻ</b>. Khi đã có menu rõ, đáp "A" / "B" / "C" — vòng lặp tiếp diễn ngay, không tốn token giải thích lại.</div>
+</section>
+
+<!-- ============ S14 — P8 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #8</div>
+  <h2 class="title">Chấp nhận đề xuất bằng ngôn ngữ tự nhiên</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — accept recommendation</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Làm theo để xuất là được nha</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Chốt phương án 1 — 1 spec multi-test serial.</span>
+
+Q5 xong. Sang <b>Q6: Test data strategy</b>.
+
+Câu hỏi: phone + IMEI dùng static (cố định trong .env) hay dynamic (faker generate mỗi run)?
+- Static: dễ debug, dễ rerun nhưng dễ trùng → form từ chối
+- Dynamic: tránh trùng, gần thực tế nhưng UAT DB phình</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>"Làm theo để xuất là được nha"</b> — câu accept khẩu ngữ thay vì "Chọn phương án 1". Claude hiểu ngay. Không cần văn vẻ.</div>
+</section>
+
+<!-- ============ S15 — P9+P10 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #9 + #10</div>
+  <h2 class="title">Override Claude bằng tri thức nghiệp vụ</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — Q6 test data</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Phone + IMEI có thể dynamic. Dùng mã vùng PH là được
+Code thì cố định theo như đề xuất trong Test Case
+Còn lại static</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Note: xlsx ghi +91 (India) — user đổi sang +63 (Philippines). Ghi nhận.</span>
+Còn 3 ý nhỏ: log? UAT limit? cleanup endpoint?</span></div>
+      <div class="prompt"><span class="p">❯</span><span class="t">1. Được
+2. Không giới hạn data, nhưng để tiện lợi, giới hạn 10 run trước thôi. Mở rộng sau
+3. Không có endpoint cleanup. Có thể cleanup thủ công. Nếu để tên customer hay gì, thêm vào prefix E2E_ cho trực quan</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Chốt: log + prefix <code>E2E_</code> + cleanup thủ công sau ~10 run. Q6 xong. Sang Q7 payment.</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Pattern <i>domain override</i>:</b> xlsx ghi +91, bạn biết UAT chỉ chấp nhận +63 → một câu, Claude đổi ngay. Bạn là <b>nguồn chân lý</b> cho business knowledge.</div>
+</section>
+
+<!-- ============ S16 — P11 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #11</div>
+  <h2 class="title">Trả lời Q7 Payment — chỉ đủ ý, không thừa</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — Q7 payment</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">1. Theo cấu trúc code thì đang dùng Razorpay. Dùng thẻ test của Razorpay là 4100 2800 0000 1007
+2. Có sandbox
+4. Popup thì phải.</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Đóng Q7. Brainstorm tổng kết:</span>
+<b>7/7 câu chốt.</b> Site map, auth, folder, spec, data strategy, payment đầy đủ.
+
+3 next-step:
+<b>1</b> — <code>/morkit:propose</code> sinh đầy đủ artifact
+<b>2</b> — Implement thẳng, skip propose
+<b>3</b> — Lưu design log, dừng tại đây</span></div>
+    </div>
+  </div>
+  <div class="insight">Bỏ qua câu 3 vì Claude tự suy ra. Bỏ qua câu hỏi không liên quan. <b>"Popup thì phải"</b> — 3 từ là đủ cho "modal popup mở chứ không phải redirect page".</div>
+</section>
+
+<!-- ============ S17 — P12+P13 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #12 + #13</div>
+  <h2 class="title">Hai cú "1" nối tiếp — chuyển skill liên tiếp</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — propose + scaffold</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">1</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Skill(morkit:propose) loaded.</span>
+2 lựa chọn scaffold path:
+<b>1</b> — <code>V1_QA_Automation/morkit/output/spec/...</code> (trong repo con)
+<b>2</b> — <code>DataCultr/morkit/...</code> (repo gốc)</span></div>
+      <div class="prompt"><span class="p">❯</span><span class="t">1</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Tạo 4 file: <code>proposal.md</code>, <code>design.md</code>, <code>tasks.md</code>, <code>.meta.json</code>.
+Auto-gọi <code>/morkit:review</code> → sinh <code>review-checklist.md</code> (Overall Decision: PENDING).
+<span class="mute">Hook sẽ chặn /morkit:executing-plans tới khi flip OK.</span></span></div>
+    </div>
+  </div>
+  <div class="insight">Khi liên tiếp gặp menu rõ, "1" + "1" = tiến qua 2 vòng. Nhưng <b>chú ý</b>: nếu lần thứ hai bạn không chắc, dừng đọc menu — đừng "1" theo quán tính.</div>
+</section>
+
+<!-- ============ S18 — P14 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #14</div>
+  <h2 class="title">Review artifact: hai sửa cụ thể, kèm trạng thái checklist</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — artifact edit</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">1. Proposal: Update code sử dụng là E2E_PLN01, không phải LISA
+2. Flow test nên để chú thích là flow tổng quan, vì sẽ còn nhiều thứ lặt vặt khi thực sự chạy E2E flow mà cần xử lý. Khi bắt đầu code, sẽ xử lý dần với developer.
+
+Đã update checklist nha</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Update 3 file:
+<div class="diff-line del">- BUY_CAMPAIGN_CODE=LISA</div>
+<div class="diff-line add">+ BUY_CAMPAIGN_CODE=E2E_PLN01</div>
+<b>+ "Scope caveat"</b> đầu design.md — code snippet là illustrative, không phải final.
+<b>+ NOTE</b> đầu tasks.md — selectors/waits/quirks sẽ resolve dần Phase 4.
+
+<span class="mute">Bạn đã tự tick checklist → tôi không động vào file đó.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Pattern <i>numbered review</i> xuất hiện sớm:</b> 2 sửa cụ thể đánh số + 1 thông báo trạng thái ("Đã update checklist nha"). Cấu trúc y hệt PR review comment.</div>
+</section>
+
+<!-- ============ S19 — P15+P16 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #15 + #16</div>
+  <h2 class="title">Đi từng đầu mục chưa tick — rồi confirm xong</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — checklist walk</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Giải quyết những đầu mục chưa tick cùng tôi</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">2 đầu mục chưa tick:
+<b>S1</b>: Proposal matches DD_E2E_TC_001 → so sánh xlsx vs proposal từng step (12/12 khớp). Đề xuất tick.
+<b>S2</b>: Dynamic phone/IMEI + prefix E2E_ acceptable to QA team? → câu này cần con người quyết.</span></div>
+      <div class="prompt"><span class="p">❯</span><span class="t">đã update lại nha</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Tất cả tick xanh ✅. <b>Overall Decision: OK</b> → hook đã unblock implementation skills.
+Next-step: <b>1</b> /morkit:executing-plans · <b>2</b> /morkit:subagent-driven-development · <b>3</b> Code thẳng từ Phase 0.</span></div>
+    </div>
+  </div>
+  <div class="insight">"Cùng tôi" là tín hiệu walk-through từng đầu mục, không phải "tự làm hết". <b>"đã update lại nha"</b> = confirm phía người + yêu cầu Claude re-read file. Văn gọn nhưng đủ.</div>
+</section>
+
+<!-- ============ S20 — P17 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #17</div>
+  <h2 class="title">Mở implement — bằng đúng "1"</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — start implement</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">1</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Skill(morkit:executing-plans) loaded.</span>
+Pre-flight check: Overall Decision = OK ✓ · git repo ✓ · tasks.md có ✓.
+
+<span class="em">⚠ Cảnh báo:</span> đang ở branch <b>main</b>. Skill yêu cầu không impl trực tiếp trên main.
+3 cách: <b>1</b> Tạo feature branch · <b>2</b> Tạo git worktree · <b>3</b> Vẫn làm trên main (không khuyến nghị).</span></div>
+    </div>
+  </div>
+  <div class="insight">Skill <code>executing-plans</code> tự chạy pre-flight: kiểm review-checklist, kiểm git branch. Nếu bạn ở main, nó dừng lại — <b>cổng người tự động</b>.</div>
+</section>
+
+<!-- ============ S21 — P18+P19 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #18 + #19</div>
+  <h2 class="title">Lập branch — và biết khi nào dừng</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — branch + build offline</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Tạo feature branch đi</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">git checkout -b feat/e2e-purchase-flow</span> ✓
+Build Phase 0/1/2/3/4/5/6 từ tasks.md: env, playwright.config, fixture jpg 2.2MB,
+7 unit test (testData, runLogger) ALL GREEN, POM skeleton, Razorpay helper, spec, cleanup README.
+Phase 4 live-verify flag cho developer. 24 files, +1582 LOC.
+3 lựa chọn finishing: <b>1</b> Merge ngay · <b>2</b> Tạo PR · <b>3</b> Giữ branch, hoàn thiện sau</span></div>
+      <div class="prompt"><span class="p">❯</span><span class="t">3</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Báo cáo state + lệnh resume:
+<code>cd V1_QA_Automation
+npx playwright test --project=e2e-purchase --headed --workers=1</code></span></div>
+    </div>
+  </div>
+  <div class="insight">Phase 1 đóng đẹp: branch tạo, build offline xong, để dành live-verify (Phase 2 sẽ làm). "3" = không merge gấp, không tạo PR sớm — <b>giữ checkpoint, đi tiếp khi sẵn sàng</b>.</div>
+</section>
+
+<!-- ============ S22 — P20 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #20</div>
+  <h2 class="title">Mở Phase 2 — chạy thật, review cùng</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — first real run</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Oke, thử chạy thật đi. Tôi sẽ review và chạy cùng bạn</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Chạy headed + slowMo để cùng xem từng action.
+<span class="em">Bash:</span> <code>HEADLESS=false SLOW_MO=300 ... -g "Phase 1"</code>
+<span class="em">Lỗi:</span> Playwright chưa cài browser binary → tự cài Chromium → rerun.
+
+<span class="em">Tiến bộ!</span> Qua landing, vào Phone Entry. Stuck vì "Buy Now" disabled. Screenshot:
+✅ Landing pass  ✅ Mobile Price 25000  ❌ Error "Enter a valid price between and" (thiếu min/max)
+❌ Country code IN +91 (mặc định) chứ không phải PH +63</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>"Tôi sẽ review và chạy cùng bạn"</b> — báo trước rằng đây là collaborative debug. Claude tự bật headed + slowMo để bạn nhìn thấy browser, không silent retry.</div>
+</section>
+
+<!-- ============ S23 — P21 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #21</div>
+  <h2 class="title">Quan sát người: "không thấy trình duyệt"</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — env var bug</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Đang không thấy trình duyệt nào được mở lên</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Có thể <code>--headed</code> flag rõ ràng hơn <code>HEADLESS=false</code> (env có thể không pass qua rtk proxy). Thử lại.
+
+<span class="em">Bash:</span> <code>SLOW_MO=800 npx playwright test --project=e2e-purchase -g "Phase 1" --headed --workers=1</code></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Pattern <i>manual observation</i>:</b> Claude báo "test pass" nhưng bạn nhìn thực tế "không thấy browser" → báo ngay. Một câu quan sát có giá trị hơn 10 dòng log — agent đổi chiến thuật trong 5 giây.</div>
+</section>
+
+<!-- ============ S24 — P22+P23 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #22 + #23</div>
+  <h2 class="title">Khi agent loop sửa selector — kéo về first-principles</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — back to concerns</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Có vẻ đang bị timeout ở giai đoạn nhập thông tin => chưa click được submit
+
+Quay trở lại các concern của bạn lúc nãy đi</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">3 concern cần bạn xác nhận:
+<b>1.</b> Code E2E_PLN01 — Plan code hay Creative code?
+   Landing có load nhưng pricing band trống → có thể PLN01 chưa link.
+<b>2.</b> Country code PH (+63) vs IN (+91)? Form mặc định IN.
+<b>3.</b> Pricing band trống là bug data hay code?
+<span class="mute">Trả lời 3 câu là tôi biết hướng fix tiếp.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Pattern <i>back to first-principles</i>:</b> quan sát ("timeout ở X") + lệnh ("quay lại concern lúc nãy") = mở lại bối cảnh agent vừa quên. Tránh sửa <i>triệu chứng</i>, đào lại <i>nguyên nhân</i>.</div>
+</section>
+
+<!-- ============ S25 — P24 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #24</div>
+  <h2 class="title">Trả lời 3 concern bằng 3 dòng</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — UAT answers</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">1. Đã sửa lại plan cho đúng spec của test case
+2. Luôn đổi sang code PH nha
+3. Pricing band đã active rồi. Check lại nha</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Update <code>PhoneEntryPage</code> để chọn country code PH từ dropdown trước khi nhập phone.
+<span class="em">Form layout (verified on UAT 2026-05-12):</span>
+- Currency display (disabled) + Mobile Price
+- combobox (country code, default "IN +91") + Phone Number
+- button "Buy Now" (enabled once both valid)</span></div>
+    </div>
+  </div>
+  <div class="insight">Không cần giải thích "vì sao đã đổi" — vào việc luôn. Pattern numbered review nguyên tắc: <b>một dòng cho mỗi concern</b>, đủ thông tin để Claude unblock.</div>
+</section>
+
+<!-- ============ S26 — P25 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #25</div>
+  <h2 class="title">Phanh số một — "Sao bạn đang bị kẹt vậy?"</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — explain stuck</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Sao bạn đang bị kẹt ở bước thanh toán vậy?</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Kẹt vì không xác định được iframe Razorpay đúng. Popup mở OK nhưng:
+Test code tìm iframe (name="razorpay-checkout-frame", src*="razorpay", …). Không match → frame trống → timeout 180s.
+
+3 cách biết chính xác:
+<b>A.</b> Debug log dump tất cả iframe name/src · <b>B.</b> <code>--debug</code> mode Inspector
+<b>C.</b> Bạn mở Razorpay manual + DevTools (F12) → copy outerHTML iframe → paste cho tôi (nhanh nhất)</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Pattern <i>why stuck?</i>:</b> agent đang retry mù 4-5 lần. Bạn ép Claude nêu failure mode trước. Kết quả: Claude tự bày 3 cách debug — bạn chỉ chọn C.</div>
+</section>
+
+<!-- ============ S27 — P26+P27 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #26 + #27</div>
+  <h2 class="title">Mắt người + DOM = một dòng cứu 30 phút</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — DevTools method</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">C</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Cách nhanh — chạy Console trên DevTools của Razorpay popup:
+<code>document.querySelectorAll('iframe').forEach((f, i) =&gt;
+  console.log(i, 'name=', f.name, '| src=', f.src, '| class=', f.className))</code>
+Copy output → paste cho tôi.</span></div>
+      <div class="prompt"><span class="p">❯</span><span class="t">[Image #1]
+
+Có 3 console log này.</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Tốt — iframe Razorpay: <code>name=""</code> (rỗng — lý do selector cũ fail) ·
+<code>src="https://api.razorpay.com/v1/checkout/public?..."</code> · <code>class="razorpay-checkout-frame"</code>
+Update selector ưu tiên class match.
+<div class="diff-line del">- 'iframe[name="razorpay-checkout-frame"]',</div>
+<div class="diff-line add">+ 'iframe.razorpay-checkout-frame',</div>
+<div class="diff-line add">+ 'iframe[src*="razorpay.com/v1/checkout"]',</div></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Pattern <i>read DOM, not logs</i>:</b> error log chỉ kể "đã hỏng". DOM kể "vì sao hỏng". Dán 1 dòng attribute thật = nhân tố tăng tốc lớn nhất Phase 2.</div>
+</section>
+
+<!-- ============ S28 — P28 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #28</div>
+  <h2 class="title">Bổ sung bước thiếu từ quan sát thủ công</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — cards click</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Đoạn mở popup payment oke rồi, nhưng phải chọn vào "Card" sau đó mới được nhập thông tin thẻ</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Update: bắt buộc click <b>Cards</b> (không conditional), đợi card number input xuất hiện.
+<span class="em">Razorpay modal defaults to UPI QR. Must click "Cards" in the left payment-methods list before any card form renders.</span>
+<div class="diff-line del">- if (await cardOpt.isVisible(...)) await cardOpt.click();</div>
+<div class="diff-line add">+ await cardOpt.waitFor({ state: 'visible', timeout: 15_000 });</div>
+<div class="diff-line add">+ await cardOpt.click();</div></span></div>
+    </div>
+  </div>
+  <div class="insight">Bạn nhìn thấy bước UI mà spec không đề cập — báo nguyên văn. Claude chuyển click từ optional thành bắt buộc. <b>Mắt người thay vì giả định</b>.</div>
+</section>
+
+<!-- ============ S29 — P29+P30+P31 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #29 + #30 + #31</div>
+  <h2 class="title">Tạm dừng — commit checkpoint — chạy tiếp</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — pause cluster</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Tạm dừng đi, mai tôi chạy tiếp</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Dừng đây. Trạng thái mai tiếp: Phase 1 đã qua landing → phone → consent → Razorpay → bank simulator → /device-details. Đang fix DeviceUploadPage (7 fields thêm).
+<span class="mute">Suggest commit checkpoint: <code>git add -A &amp;&amp; git commit -m "wip: e2e phase 1 reaches device-details"</code></span></span></div>
+      <div class="prompt"><span class="p">❯</span><span class="t">commit checkpoint</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Commit <code>33ca2d9</code> trên branch <code>feat/dd-e2e-tc001-purchase-flow</code>. 24 files, +1582 LOC.</span></div>
+      <div class="prompt"><span class="p">❯</span><span class="t">Chạy tiếp giúp tôi</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Rerun Phase 1 headed. Label "Brand *" có asterisk → <code>getByText(/^brand$/i)</code> exact match fail. Loosen regex → <code>getByPlaceholder(/samsung|apple|xiaomi/i)</code>.</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Pattern <i>pause/resume awareness</i>:</b> 3 prompt rất ngắn cho cả ngày làm việc. Ngữ cảnh lưu trong file (TODO, code, plan) — phiên chỉ là cửa sổ điều khiển.</div>
+</section>
+
+<!-- ============ S30 — P32 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #32</div>
+  <h2 class="title">Đổi chiến thuật chạy — một câu là đủ</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — headless mode</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Từ bây giờ, mở headless nha</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">OK, headless mode từ giờ.
+<span class="em">Bash:</span> <code>npx playwright test --project=e2e-purchase -g "Phase 1" --reporter=list --workers=1</code>
+
+<span class="mute">Headless chạy nhanh hơn — iframe Razorpay chưa kịp attach. Thêm poll-with-deadline.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>"Từ bây giờ"</b> = chỉ thị áp dụng cho mọi run tiếp theo. Không cần lặp lại từng lần. Agent ghi nhớ trong session.</div>
+</section>
+
+<!-- ============ S31 — P33 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #33</div>
+  <h2 class="title">Pre-empt flaky pattern — popup không chắc xuất hiện</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — optional modal</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Chỗ popup popup RBI "Save your card?", có thể để optional được không, có khả năng nó hiện hoặc không</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Về RBI popup: <b>đã optional sẵn</b> — <code>if (await rbiSkip.isVisible({timeout: 5000}).catch(() =&gt; false))</code>. Hiện hay không cũng OK, không block.
+
+<span class="em">Bug mới phát hiện:</span> sandbox Razorpay không OTP mà là <b>bank simulator</b> với 2 nút Success / Failure. Phải click Success. Có thể render trong iframe hoặc parent page.</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Pattern <i>conditional UI</i>:</b> bạn đoán trước popup sẽ flaky. Báo Claude xử lý optional ngay từ đầu — không đợi gặp flake mới sửa. Tiết kiệm 1 vòng debug.</div>
+</section>
+
+<!-- ============ S32 — P34 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #34</div>
+  <h2 class="title">Đóng giai đoạn — commit + xuất tài liệu chạy</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — feature complete</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Commit đi, rồi gửi tôi hướng dẫn chạy thủ công test case này nha</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Commit <code>9fd684b</code>: feat — e2e purchase flow all 3 phases passing on UAT. 6 files, +272 -57.
+
+<span class="em">Manual Run Guide:</span>
+Prerequisites: <code>npm install</code> · <code>npx playwright install chromium</code>
+Env: <code>ADMIN_*</code>, <code>BUY_*</code>, <code>PORTAL_*</code>, <code>RAZORPAY_TEST_CARD</code>
+Run: <code>npx playwright test --project=e2e-purchase</code> (~90s)
+Cleanup: filter <code>E2E_</code> in Admin → mass-delete
+<span class="mute">+ HTML report, troubleshooting, file map.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>"Commit đi, rồi gửi tôi hướng dẫn chạy thủ công"</b> — hai action ghép một câu. Agent làm cả hai tuần tự. Không cần 2 prompt riêng.</div>
+</section>
+
+<!-- ============ S33 — P35 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 3 · POLISH</b> · Prompt #35</div>
+  <h2 class="title">PR review style — bốn điểm, bốn fix</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — numbered review</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">1. Chỗ prerequisite, có thể thêm vào readme của repo không, hay khi cài Playwright nó tự cài hết cho mình rồi?
+2. Nên cho file env.example thay vì commit thẳng .env.dev lên. Nhớ ignore .env* để tránh commit.
+3. Lệnh này, sửa project thành code của Test Case được không? npx playwright test --project=e2e-purchase. Nhớ cho vào readme
+4. Phần cleanup bạn đã chạy chưa?
+
+Export hướng dẫn chạy của bạn vào 1 file .md nha</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><b>1.</b> <code>npm install</code> không auto cài browser. Cần <code>npx playwright install</code> riêng. Thêm README.
+<b>2.</b> Tạo <code>.env.example</code> + thêm <code>.env*</code> vào .gitignore + <code>git rm --cached .env.dev</code>.
+<b>3.</b> Project <code>e2e-purchase</code> → rename <code>DD_E2E_TC_001</code>.
+<b>4.</b> Cleanup UAT — chưa chạy. ~17 customer E2E_ trong DB. Cần làm thủ công.
+Viết <code>tests/ui/e2e/RUN_GUIDE.md</code>.</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Pattern <i>numbered review</i> đỉnh điểm:</b> 4 điểm đánh số như comment PR review. Claude phản hồi đúng theo điểm, không lẫn. Action "export" gắn cuối — cùng vòng xử lý.</div>
+</section>
+
+<!-- ============ S34 — P36 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 3 · POLISH</b> · Prompt #36</div>
+  <h2 class="title">Relocate artifact — một câu là xong</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — move file</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Cho file guide đó ra repo root đi</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Bash:</span> <code>git mv tests/ui/e2e/RUN_GUIDE.md RUN_GUIDE.md</code>
+Update README link: <code>[tests/ui/e2e/RUN_GUIDE.md] → [RUN_GUIDE.md]</code>.
+Commit <code>dde6702</code>: docs — move RUN_GUIDE.md to repo root.</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Một câu tiếng Việt khẩu ngữ</b> = Claude hiểu ngay đối tượng ("file guide đó") nhờ context vừa rồi. Git mv preserve history, README link auto-update.</div>
+</section>
+
+<!-- ============ S35 — P37 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 3 · POLISH</b> · Prompt #37</div>
+  <h2 class="title">Báo lỗi runtime — dán nguyên văn error</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — runtime error</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Khi chạy lệnh này, đang có lỗi trả về
+
+HEADLESS=false SLOW_MO=300 npx playwright test --project=DD_E2E_TC_001 --headed --workers=1
+
+Error: Project(s) "DD_E2E_TC_001" not found. Available projects: ""</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Diagnose:</span> "Available projects: ''" = config load OK nhưng projects rỗng.
+Path <code>~/.npm/_npx/e41f203b7505f1fb/...</code> = npx dùng <b>cache</b>, không phải local <code>node_modules</code>.
+
+<span class="em">Fix:</span> dùng <code>./node_modules/.bin/playwright</code> hoặc thêm <code>npm run</code> scripts trỏ local binary.
+Update <code>package.json</code>: <code>test:e2e</code>, <code>test:e2e:headed</code>, <code>test:e2e:debug</code>.
+Doc warning trong RUN_GUIDE: tránh <code>npx playwright</code> vì cache resolution.</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Pattern <i>paste exact error</i>:</b> không "không chạy được", không "có lỗi" — dán nguyên văn lệnh + error message. Claude diagnose chính xác trong 1 vòng.</div>
+</section>
+
+<!-- ============ S36 — P38+P39 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 3 · POLISH</b> · Prompt #38 + #39</div>
+  <h2 class="title">Pushback kiến trúc — "đơn giản hơn được không?"</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — design pushback</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">các lệnh trong package.json đang bị viết để chạy 1 test case thôi. Nếu sau tôi có thêm các test cases khác thì sao?
+
+Có cách nào để chạy hết các projects bằng playwright không?</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">User point đúng — hardcoded TC ID vào project name không scale. 3 lựa chọn:
+<b>A</b> — 1 project "E2E", nhiều spec (đề xuất)
+<b>B</b> — Per-TC project + glob <code>--project=DD_E2E_*</code>
+<b>C</b> — Tag-based <code>@TC001</code></span></div>
+      <div class="prompt"><span class="p">❯</span><span class="t">Hoặc trong packages.json thì bỏ --projects=* đi, trong RUN_GUIDE thì viết hướng dẫn chạy tất cả project, hoặc chạy đơn lẻ từng project một</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">OK. Simplify scripts + doc. Bỏ filter project, để doc dạy người chạy <code>--project=&lt;tên&gt;</code> khi cần.
+Cần fix: UI project có <code>testDir: 'tests'</code> bao gồm E2E → thêm <code>testIgnore: 'ui/e2e/**'</code> tránh chạy 2 lần.</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Pattern <i>simpler alternative</i>:</b> Claude bày 3 phương án, bạn đưa phương án 4 đơn giản hơn cả 3. <b>Đơn giản thắng phức tạp</b> — chống over-engineering.</div>
+</section>
+
+<!-- ============ S37 — P40 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 3 · POLISH</b> · Prompt #40</div>
+  <h2 class="title">Spot dead code — đính ảnh + hỏi câu chính xác</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — dead code spot</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Tôi thấy trong env có đoạn này: [Image #3]
+
+Đoạn này có vẻ obsolete trong test case này của tôi. Hiện tại, có flow nào đang test cái đó à?</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">grep -r ...</span> Không obsolete cho repo, nhưng obsolete cho DD_E2E_TC_001.
+<b>BASE_URL</b> ✅ playwright.config.ts:33 + legacy login POM
+<b>API_URL</b> ❌ dead var — code đọc <code>API_BASE_URL</code> (khác tên)
+<b>AUTO_USERNAME / AUTO_USER_PASSWORD</b> ✅ 10 legacy UI spec dùng
+
+3 lựa chọn: A giữ + section "Legacy" · B bỏ legacy section · C verify legacy specs có còn chạy không.</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Pattern <i>spot dead code</i>:</b> "có vẻ obsolete" + "có flow nào đang test cái đó" = câu hỏi chính xác. Claude grep verify, lập bảng, đề xuất 3 phương án. <b>Trust but verify</b>.</div>
+</section>
+
+<!-- ============ S38 — P41 ============ -->
+<section class="slide">
+  <div class="eyebrow"><b>PHASE 3 · POLISH</b> · Prompt #41</div>
+  <h2 class="title">Defer — bạn nắm quyền điều phối</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — defer task</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Tạm thời bỏ qua đi, đừng làm gì cả. Tôi có 1 request khác cần modify test case DD_E2E_TC_001</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">OK. Request?</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Pattern <i>defer &amp; redirect</i>:</b> Claude đang chờ bạn chọn A/B/C, bạn defer + chuyển sang task mới. Agent buông ngay, không cố thuyết phục. <b>Control flow là của bạn, không phải agent</b>.</div>
+</section>
+
+<!-- ============ S39 — 10 PATTERNS ============ -->
+<section class="slide">
+  <div class="eyebrow"><span class="dot"></span>Tổng hợp · 1/3</div>
+  <h2 class="title">10 prompt patterns đúc kết từ 42 lượt</h2>
+  <table style="margin-top:10px">
+    <thead><tr><th style="width:32px">#</th><th style="width:32%">Pattern</th><th>Ví dụ rút gọn từ session này</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><b>Mở đầu 3-trong-1</b> (ngôn ngữ + mục tiêu + skill)</td><td>"Nói chuyện bằng tiếng Việt nha. Tôi muốn… Chạy skill <code>/morkit:brainstorming</code>"</td></tr>
+      <tr><td>2</td><td><b>Numbered answers / numbered review</b></td><td>"1. … 2. … 3. … Ngoài ra: …"</td></tr>
+      <tr><td>3</td><td><b>One-letter decision</b> khi đã có menu</td><td>"A", "1", "C", "OK"</td></tr>
+      <tr><td>4</td><td><b>Process-level instruction</b></td><td>"Cho vào TODO, đi từng câu một"</td></tr>
+      <tr><td>5</td><td><b>Resource pointer</b> <code>@&lt;file&gt;</code></td><td>"Đọc file CSV này nhé: <code>@DD_TestCases.csv</code>"</td></tr>
+      <tr><td>6</td><td><b>Domain override</b> — bạn là chân lý nghiệp vụ</td><td>"Phone + IMEI có thể dynamic. Dùng mã vùng PH"</td></tr>
+      <tr><td>7</td><td><b>Why stuck?</b> — chặn retry mù</td><td>"Sao bạn đang bị kẹt ở bước thanh toán vậy?"</td></tr>
+      <tr><td>8</td><td><b>Back to first-principles</b></td><td>"Quay trở lại các concern của bạn lúc nãy đi"</td></tr>
+      <tr><td>9</td><td><b>Read DOM, not logs</b></td><td>Paste attribute iframe Razorpay từ DevTools</td></tr>
+      <tr><td>10</td><td><b>Pause / Resume awareness</b></td><td>"Tạm dừng", "commit checkpoint", "Chạy tiếp"</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ S40 — ANTI-PATTERNS ============ -->
+<section class="slide">
+  <div class="eyebrow"><span class="dot"></span>Tổng hợp · 2/3</div>
+  <h2 class="title"> thói quen cần bỏ khi chuyển từ ChatGPT</h2>
+  <div class="grid grid-2" style="margin-top:14px">
+    <div class="card"><h4>1 · Prompt lan man khi đã có menu</h4><p>Claude đã liệt kê 3 lựa chọn rõ ràng — viết hai đoạn văn giải thích là tự đốt token. Một ký tự đủ.</p></div>
+    <div class="card"><h4>2 · "Fix hết lỗi đi"</h4><p>Mơ hồ. Dán lệnh + error nguyên văn, chỉ rõ file/dòng. Trust but verify.</p></div>
+    <div class="card"><h4>3 · Không đọc screenshot / DOM</h4><p>Cứ retry liên tục trong khi DOM thật chỉ cách 30 giây mở DevTools. Mắt người ăn đứt log.</p></div>
+    <div class="card"><h4>4 · Trộn Plan và Implement</h4><p>Yêu cầu Claude vừa thiết kế vừa code trong một prompt = ra cả hai đều dở. Tách giai đoạn brainstorm → propose → review → cook.</p></div>
+    <div class="card" style="grid-column:span 2"><h4>5 · Không "commit checkpoint" khi pause</h4><p>Đóng cửa sổ giữa chừng mà chưa commit = mai phải tự kể lại bối cảnh. Một câu "commit checkpoint" tiết kiệm 15 phút khởi động lại.</p></div>
+  </div>
+</section>
+
+<!-- ============ S41 — CHEAT SHEET ============ -->
+<section class="slide">
+  <div class="eyebrow"><span class="dot"></span>Tổng hợp · 3/3 · Cheat sheet</div>
+  <h2 class="title">Năm mẫu prompt mang đi dùng ngay</h2>
+  <div class="grid grid-2" style="margin-top:10px">
+    <div class="card">
+      <h4>1 · Mở đầu task mới</h4>
+      <pre style="margin:4px 0 0;font-family:var(--mono);font-size:13px;background:transparent;color:var(--ink);white-space:pre-wrap">Nói chuyện bằng tiếng Việt.
+Mục tiêu: &lt;một câu&gt;.
+Bối cảnh: @&lt;file&gt;, @&lt;repo&gt;.
+Chạy skill /morkit:brainstorming.</pre>
+    </div>
+    <div class="card">
+      <h4>2 · Trả lời nhiều câu hỏi</h4>
+      <pre style="margin:4px 0 0;font-family:var(--mono);font-size:13px;background:transparent;color:var(--ink);white-space:pre-wrap">1. &lt;đáp Q1&gt;
+2. &lt;đáp Q2&gt;
+3. &lt;đáp Q3&gt;
+Ngoài ra: &lt;câu hỏi mới&gt;</pre>
+    </div>
+    <div class="card">
+      <h4>3 · Chặn retry mù</h4>
+      <pre style="margin:4px 0 0;font-family:var(--mono);font-size:13px;background:transparent;color:var(--ink);white-space:pre-wrap">Sao bạn đang bị kẹt ở &lt;bước&gt; vậy?
+Giải thích failure mode trước,
+đừng thử lại selector ngay.</pre>
+    </div>
+    <div class="card">
+      <h4>4 · Đẩy ngược thiết kế</h4>
+      <pre style="margin:4px 0 0;font-family:var(--mono);font-size:13px;background:transparent;color:var(--ink);white-space:pre-wrap">Cách bạn đề xuất phức tạp.
+Có phương án đơn giản hơn không?
+Ví dụ: bỏ &lt;X&gt;, để doc dạy người.</pre>
+    </div>
+    <div class="card" style="grid-column:span 2">
+      <h4>5 · Tạm dừng &amp; tiếp tục</h4>
+      <pre style="margin:4px 0 0;font-family:var(--mono);font-size:13px;background:transparent;color:var(--ink);white-space:pre-wrap"># cuối ngày
+commit checkpoint
+
+# sáng hôm sau
+Chạy tiếp giúp tôi. Cập nhật lại TODO đi, tôi vừa thoát session.</pre>
+    </div>
+  </div>
+  <p class="lead muted center" style="margin-top:14px;font-style:italic">AI làm boilerplate. Người làm phán đoán. Prompt ngắn hiệu quả khi turn trước đã rõ menu.</p>
+  <p class="tiny muted center" style="font-family:var(--mono);letter-spacing:.04em">Hết — DataCultr · V1_QA_Automation · <code>journal-e2e-purchase-flow.md</code></p>
+</section>
+
+</main>
+
+<script>
+(function(){
+  var slides = document.querySelectorAll('.slide');
+  var total = slides.length;
+  var cur = 0;
+  var progress = document.getElementById('progress');
+  var curEl = document.getElementById('cur');
+  var snumEl = document.getElementById('snum');
+  var counter = document.querySelector('.nav .counter');
+  // Update counter total since deck is 41 slides
+  counter.innerHTML = '<span id="cur">1</span> / ' + total;
+  curEl = document.getElementById('cur');
+
+  function pad(n){return n<10?'0'+n:''+n;}
+  function show(i){
+    if(i<0) i=0; if(i>=total) i=total-1;
+    slides.forEach(function(s){s.removeAttribute('data-active');});
+    slides[i].setAttribute('data-active','');
+    cur=i;
+    progress.style.width = ((i+1)/total*100)+'%';
+    curEl.textContent = (i+1);
+    snumEl.textContent = pad(i+1)+' / '+pad(total);
+    try{ history.replaceState(null,'','#'+(i+1)); }catch(e){}
+  }
+  function next(){show(cur+1);}
+  function prev(){show(cur-1);}
+  document.getElementById('next').addEventListener('click',next);
+  document.getElementById('prev').addEventListener('click',prev);
+  document.addEventListener('keydown',function(e){
+    if(e.target && /input|textarea/i.test(e.target.tagName)) return;
+    switch(e.key){
+      case 'ArrowRight': case 'PageDown': case ' ': case 'l': next(); e.preventDefault(); break;
+      case 'ArrowLeft': case 'PageUp': case 'h': prev(); e.preventDefault(); break;
+      case 'Home': show(0); break;
+      case 'End': show(total-1); break;
+      case 'f': case 'F':
+        if(document.fullscreenElement){document.exitFullscreen();} else {document.documentElement.requestFullscreen();}
+        break;
+    }
+    if(/^[0-9]$/.test(e.key)){
+      var idx = parseInt(e.key,10);
+      if(idx>0 && idx<=total) show(idx-1);
+    }
+  });
+  var h = parseInt((location.hash||'').replace('#',''),10);
+  if(!isNaN(h) && h>=1 && h<=total){ show(h-1); } else { show(0); }
+  var startX=null;
+  document.addEventListener('touchstart',function(e){startX=e.touches[0].clientX;},{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(startX===null) return;
+    var dx = e.changedTouches[0].clientX - startX;
+    if(Math.abs(dx)>50){ dx<0?next():prev(); }
+    startX=null;
+  });
+  var saved = localStorage.getItem('cc-deck-theme') || 'system';
+  function applyTheme(t){
+    if(t==='system'){ document.documentElement.removeAttribute('data-theme'); }
+    else { document.documentElement.setAttribute('data-theme',t); }
+    document.querySelectorAll('.theme button').forEach(function(b){
+      b.classList.toggle('active', b.dataset.theme===t);
+    });
+    localStorage.setItem('cc-deck-theme',t);
+  }
+  document.querySelectorAll('.theme button').forEach(function(b){
+    b.addEventListener('click',function(){ applyTheme(b.dataset.theme); });
+  });
+  applyTheme(saved);
+})();
+</script>
+</body>
+</html>
