@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -118,6 +118,9 @@ tr:hover td{background:var(--card)}
 .theme{position:fixed;top:14px;right:20px;display:flex;gap:5px;z-index:50;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:3px}
 .theme button{appearance:none;border:0;background:transparent;color:var(--muted);font-family:var(--mono);font-size:10.5px;padding:4px 9px;border-radius:99px;cursor:pointer;letter-spacing:.08em;text-transform:uppercase}
 .theme button.active{background:var(--accent);color:#fffaf3}
+.lang{position:fixed;top:14px;left:20px;display:flex;gap:5px;z-index:50;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:3px}
+.lang button{appearance:none;border:0;background:transparent;color:var(--muted);font-family:var(--mono);font-size:10.5px;padding:4px 11px;border-radius:99px;cursor:pointer;letter-spacing:.08em;text-transform:uppercase}
+.lang button.active{background:var(--accent);color:#fffaf3}
 .snum{position:fixed;bottom:16px;left:20px;font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;z-index:40}
 
 @media (max-width:1000px){
@@ -137,13 +140,19 @@ tr:hover td{background:var(--card)}
   html,body{overflow:visible;height:auto}
   .deck{position:static;display:block;padding:0}
   .slide{position:relative;inset:auto;display:flex !important;page-break-after:always;min-height:100vh;padding:36px}
-  .nav,.theme,.bar,.snum{display:none !important}
+  .nav,.theme,.lang,.bar,.snum{display:none !important}
+  html[lang="vi"] .slide[data-lang="en"]{display:none !important}
+  html[lang="en"] .slide[data-lang="vi"]{display:none !important}
 }
 </style>
 </head>
 <body>
 
 <div class="bar"><i id="progress"></i></div>
+<div class="lang" role="group" aria-label="Language">
+  <button data-lang="vi">VI</button>
+  <button data-lang="en" class="active">EN</button>
+</div>
 <div class="theme" role="group" aria-label="Theme">
   <button data-theme="light">Sáng</button>
   <button data-theme="dark">Tối</button>
@@ -159,7 +168,7 @@ tr:hover td{background:var(--card)}
 <main class="deck" id="deck">
 
 <!-- ============ S1 — BÌA ============ -->
-<section class="slide" data-active>
+<section class="slide" data-lang="vi">
   <div class="cover">
     <div class="eyebrow"><span class="dot"></span>Tài liệu nội bộ · DataCultr · V1_QA_Automation</div>
     <h1 class="title">Quy trình áp dụng thử AI Workflow<br>cho E2E_TC001</h1>
@@ -175,7 +184,7 @@ tr:hover td{background:var(--card)}
 </section>
 
 <!-- ============ S2 — MỤC LỤC ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><span class="dot"></span>Mục lục</div>
   <h2 class="title">Các phần chính</h2>
   <div class="grid grid-2" style="margin-top:14px">
@@ -188,7 +197,7 @@ tr:hover td{background:var(--card)}
 </section>
 
 <!-- ============ S3 — BỐI CẢNH ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><span class="dot"></span>Bối cảnh dự án</div>
   <h2 class="title">Tự động hoá một test case xuyên ba site</h2>
   <div class="split" style="margin-top:14px">
@@ -209,7 +218,7 @@ tr:hover td{background:var(--card)}
 </section>
 
 <!-- ============ S4 — CLAUDE CODE KHÁC GÌ ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><span class="dot"></span>Khái niệm cốt lõi · 1/2</div>
   <h2 class="title">Chat tool vs Coding agent: đổi tư duy trước khi đổi cú pháp</h2>
   <p class="ink" style="font-size:17px;max-width:920px;margin:0 0 18px">Trước khi học cách viết prompt, cần thấy <b>Claude Code khác công cụ bạn đang dùng ở đâu</b>. ChatGPT/Copilot là <b>trợ lý ngồi cạnh</b> — bạn hỏi, nó trả lời, bạn copy. Claude Code là <b>đồng nghiệp tự chạy trong máy bạn</b> — đọc file, sửa file, chạy lệnh, ghi TODO. Hai mô hình khác nhau khiến cách viết prompt cũng phải khác để phù hợp hơn với luồng Agentic Workflow.</p>
@@ -231,7 +240,7 @@ tr:hover td{background:var(--card)}
 </section>
 
 <!-- ============ S5 — 4 VIÊN GẠCH ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><span class="dot"></span>Khái niệm cốt lõi · 2/2</div>
   <h2 class="title">Bốn viên gạch dựng nên mọi phiên</h2>
   <div class="grid grid-4" style="margin-top:14px">
@@ -244,7 +253,7 @@ tr:hover td{background:var(--card)}
 </section>
 
 <!-- ============ S6 — P1 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #1</div>
   <h2 class="title">Mở đầu</h2>
   <div class="term">
@@ -272,7 +281,7 @@ Vài câu hỏi mở đầu:
 </section>
 
 <!-- ============ S8 — P2 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #2</div>
   <h2 class="title">Trả lời sáu câu hỏi theo sáu số</h2>
   <div class="term">
@@ -301,7 +310,7 @@ Ngoài ra, chạy E2E testing trên 3 URL riêng biệt được định nghĩa 
 </section>
 
 <!-- ============ S8.5 — Câu Claude hỏi lại (interlude) ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Trước Prompt #3 · Câu Claude hỏi lại</div>
   <h2 class="title">Claude tiếp tục câu hỏi lúc brainstorming</h2>
   <div class="term">
@@ -332,7 +341,7 @@ Ngoài ra, chạy E2E testing trên 3 URL riêng biệt được định nghĩa 
 </section>
 
 <!-- ============ S9 — P3 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #3</div>
   <h2 class="title">Ra lệnh <i>cách</i> làm, không chỉ <i>cái</i> làm</h2>
   <div class="term">
@@ -355,7 +364,7 @@ Option C — Cho path xlsx, tôi đọc bằng tool</span></div>
 </section>
 
 <!-- ============ S10 — P4 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #4</div>
   <h2 class="title">Trỏ tài nguyên bằng <code>@</code>, không mô tả miệng</h2>
   <div class="term">
@@ -377,7 +386,7 @@ Test data: Plan E2E_PLN01, Phone +91-9876543210, IMEI 354897123456789, Samsung G
 </section>
 
 <!-- ============ S11 — P5 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #5</div>
   <h2 class="title">Resume sau khi <code>/exit</code> — TODO không mất</h2>
   <div class="term">
@@ -399,7 +408,7 @@ Tiếp Q4 — 3 ý cần trả lời:
 </section>
 
 <!-- ============ S12 — P6 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #6</div>
   <h2 class="title">Cung cấp credentials gọn gàng theo số</h2>
   <div class="term">
@@ -420,7 +429,7 @@ Tiếp Q4 — 3 ý cần trả lời:
 </section>
 
 <!-- ============ S13 — P7 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #7</div>
   <h2 class="title">Khi Claude bày menu — chọn bằng một ký tự</h2>
   <div class="term">
@@ -441,7 +450,7 @@ Tiếp nửa sau Q5: cấu trúc spec file.
 </section>
 
 <!-- ============ S14 — P8 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #8</div>
   <h2 class="title">Chấp nhận đề xuất bằng ngôn ngữ tự nhiên</h2>
   <div class="term">
@@ -461,7 +470,7 @@ Câu hỏi: phone + IMEI dùng static (cố định trong .env) hay dynamic (fak
 </section>
 
 <!-- ============ S15 — P9+P10 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #9 + #10</div>
   <h2 class="title">Override Claude bằng tri thức nghiệp vụ</h2>
   <div class="term">
@@ -482,7 +491,7 @@ Còn 3 ý nhỏ: log? UAT limit? cleanup endpoint?</span></div>
 </section>
 
 <!-- ============ S16 — P11 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #11</div>
   <h2 class="title">Trả lời Q7 Payment — chỉ đủ ý, không thừa</h2>
   <div class="term">
@@ -504,7 +513,7 @@ Còn 3 ý nhỏ: log? UAT limit? cleanup endpoint?</span></div>
 </section>
 
 <!-- ============ S17 — P12+P13 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #12 + #13</div>
   <h2 class="title">Hai cú "1" nối tiếp — chuyển skill liên tiếp</h2>
   <div class="term">
@@ -525,7 +534,7 @@ Auto-gọi <code>/morkit:review</code> → sinh <code>review-checklist.md</code>
 </section>
 
 <!-- ============ S18 — P14 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #14</div>
   <h2 class="title">Review artifact: hai sửa cụ thể, kèm trạng thái checklist</h2>
   <div class="term">
@@ -548,7 +557,7 @@ Auto-gọi <code>/morkit:review</code> → sinh <code>review-checklist.md</code>
 </section>
 
 <!-- ============ S19 — P15+P16 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #15 + #16</div>
   <h2 class="title">Đi từng đầu mục chưa tick — rồi confirm xong</h2>
   <div class="term">
@@ -567,7 +576,7 @@ Next-step: <b>1</b> /morkit:executing-plans · <b>2</b> /morkit:subagent-driven-
 </section>
 
 <!-- ============ S20 — P17 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #17</div>
   <h2 class="title">Mở implement — bằng đúng "1"</h2>
   <div class="term">
@@ -585,7 +594,7 @@ Pre-flight check: Overall Decision = OK ✓ · git repo ✓ · tasks.md có ✓.
 </section>
 
 <!-- ============ S21 — P18+P19 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #18 + #19</div>
   <h2 class="title">Lập branch — và biết khi nào dừng</h2>
   <div class="term">
@@ -607,7 +616,7 @@ npx playwright test --project=e2e-purchase --headed --workers=1</code></span></d
 </section>
 
 <!-- ============ S22 — P20 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #20</div>
   <h2 class="title">Mở Phase 2 — chạy thật, review cùng</h2>
   <div class="term">
@@ -627,7 +636,7 @@ npx playwright test --project=e2e-purchase --headed --workers=1</code></span></d
 </section>
 
 <!-- ============ S23 — P21 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #21</div>
   <h2 class="title">Quan sát người: "không thấy trình duyệt"</h2>
   <div class="term">
@@ -643,7 +652,7 @@ npx playwright test --project=e2e-purchase --headed --workers=1</code></span></d
 </section>
 
 <!-- ============ S24 — P22+P23 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #22 + #23</div>
   <h2 class="title">Khi agent loop sửa selector — kéo về first-principles</h2>
   <div class="term">
@@ -664,7 +673,7 @@ Quay trở lại các concern của bạn lúc nãy đi</span></div>
 </section>
 
 <!-- ============ S25 — P24 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #24</div>
   <h2 class="title">Trả lời 3 concern bằng 3 dòng</h2>
   <div class="term">
@@ -684,7 +693,7 @@ Quay trở lại các concern của bạn lúc nãy đi</span></div>
 </section>
 
 <!-- ============ S26 — P25 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #25</div>
   <h2 class="title">Phanh số một — "Sao bạn đang bị kẹt vậy?"</h2>
   <div class="term">
@@ -703,7 +712,7 @@ Test code tìm iframe (name="razorpay-checkout-frame", src*="razorpay", …). Kh
 </section>
 
 <!-- ============ S27 — P26+P27 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #26 + #27</div>
   <h2 class="title">Mắt người + DOM = một dòng cứu 30 phút</h2>
   <div class="term">
@@ -729,7 +738,7 @@ Update selector ưu tiên class match.
 </section>
 
 <!-- ============ S28 — P28 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #28</div>
   <h2 class="title">Bổ sung bước thiếu từ quan sát thủ công</h2>
   <div class="term">
@@ -747,7 +756,7 @@ Update selector ưu tiên class match.
 </section>
 
 <!-- ============ S29 — P29+P30+P31 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #29 + #30 + #31</div>
   <h2 class="title">Tạm dừng — commit checkpoint — chạy tiếp</h2>
   <div class="term">
@@ -766,7 +775,7 @@ Update selector ưu tiên class match.
 </section>
 
 <!-- ============ S30 — P32 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #32</div>
   <h2 class="title">Đổi chiến thuật chạy — một câu là đủ</h2>
   <div class="term">
@@ -783,7 +792,7 @@ Update selector ưu tiên class match.
 </section>
 
 <!-- ============ S31 — P33 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #33</div>
   <h2 class="title">Pre-empt flaky pattern — popup không chắc xuất hiện</h2>
   <div class="term">
@@ -799,7 +808,7 @@ Update selector ưu tiên class match.
 </section>
 
 <!-- ============ S32 — P34 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #34</div>
   <h2 class="title">Đóng giai đoạn — commit + xuất tài liệu chạy</h2>
   <div class="term">
@@ -820,7 +829,7 @@ Cleanup: filter <code>E2E_</code> in Admin → mass-delete
 </section>
 
 <!-- ============ S33 — P35 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 3 · POLISH</b> · Prompt #35</div>
   <h2 class="title">PR review style — bốn điểm, bốn fix</h2>
   <div class="term">
@@ -843,7 +852,7 @@ Viết <code>tests/ui/e2e/RUN_GUIDE.md</code>.</span></div>
 </section>
 
 <!-- ============ S34 — P36 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 3 · POLISH</b> · Prompt #36</div>
   <h2 class="title">Relocate artifact — một câu là xong</h2>
   <div class="term">
@@ -859,7 +868,7 @@ Commit <code>dde6702</code>: docs — move RUN_GUIDE.md to repo root.</span></di
 </section>
 
 <!-- ============ S35 — P37 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 3 · POLISH</b> · Prompt #37</div>
   <h2 class="title">Báo lỗi runtime — dán nguyên văn error</h2>
   <div class="term">
@@ -882,7 +891,7 @@ Doc warning trong RUN_GUIDE: tránh <code>npx playwright</code> vì cache resolu
 </section>
 
 <!-- ============ S36 — P38+P39 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 3 · POLISH</b> · Prompt #38 + #39</div>
   <h2 class="title">Pushback kiến trúc — "đơn giản hơn được không?"</h2>
   <div class="term">
@@ -904,7 +913,7 @@ Cần fix: UI project có <code>testDir: 'tests'</code> bao gồm E2E → thêm 
 </section>
 
 <!-- ============ S37 — P40 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 3 · POLISH</b> · Prompt #40</div>
   <h2 class="title">Spot dead code — đính ảnh + hỏi câu chính xác</h2>
   <div class="term">
@@ -925,7 +934,7 @@ Cần fix: UI project có <code>testDir: 'tests'</code> bao gồm E2E → thêm 
 </section>
 
 <!-- ============ S38 — P41 ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><b>PHASE 3 · POLISH</b> · Prompt #41</div>
   <h2 class="title">Defer — bạn nắm quyền điều phối</h2>
   <div class="term">
@@ -939,7 +948,7 @@ Cần fix: UI project có <code>testDir: 'tests'</code> bao gồm E2E → thêm 
 </section>
 
 <!-- ============ S39 — 10 PATTERNS ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><span class="dot"></span>Tổng hợp · 1/3</div>
   <h2 class="title">10 prompt patterns đúc kết từ 42 lượt</h2>
   <table style="margin-top:10px">
@@ -960,7 +969,7 @@ Cần fix: UI project có <code>testDir: 'tests'</code> bao gồm E2E → thêm 
 </section>
 
 <!-- ============ S40 — ANTI-PATTERNS ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><span class="dot"></span>Tổng hợp · 2/3</div>
   <h2 class="title"> thói quen cần bỏ khi chuyển từ ChatGPT</h2>
   <div class="grid grid-2" style="margin-top:14px">
@@ -973,7 +982,7 @@ Cần fix: UI project có <code>testDir: 'tests'</code> bao gồm E2E → thêm 
 </section>
 
 <!-- ============ S41 — CHEAT SHEET ============ -->
-<section class="slide">
+<section class="slide" data-lang="vi">
   <div class="eyebrow"><span class="dot"></span>Tổng hợp · 3/3 · Cheat sheet</div>
   <h2 class="title">Năm mẫu prompt mang đi dùng ngay</h2>
   <div class="grid grid-2" style="margin-top:10px">
@@ -1016,54 +1025,968 @@ Chạy tiếp giúp tôi. Cập nhật lại TODO đi, tôi vừa thoát session
   <p class="tiny muted center" style="font-family:var(--mono);letter-spacing:.04em">Hết — DataCultr · V1_QA_Automation · <code>journal-e2e-purchase-flow.md</code></p>
 </section>
 
+<!-- ============================================================= -->
+<!-- ============ ENGLISH SLIDES (data-lang="en") ================ -->
+<!-- ============================================================= -->
+
+<!-- ============ S1 — COVER ============ -->
+<section class="slide" data-lang="en" data-active>
+  <div class="cover">
+    <div class="eyebrow"><span class="dot"></span>Internal doc · DataCultr · V1_QA_Automation</div>
+    <h1 class="title">Trialing an AI workflow<br>for E2E_TC001</h1>
+    <p class="lead" style="max-width:780px">42 real prompts + 40 analysis slides. A breakdown of exactly how NhatLQ wrote the prompts that produced the E2E test code for TC_001.</p>
+    <div style="margin-top:24px">
+      <span class="tag">For devs/QA familiar with Claude Code &amp; working with AI in general</span>
+      <span class="tag">45–60 minutes</span>
+      <span class="tag">English</span>
+    </div>
+    <p class="tiny" style="margin-top:28px;color:rgba(255,255,255,.65);font-family:var(--mono);letter-spacing:.04em">Source: <code style="background:rgba(255,255,255,.1);padding:1px 6px;border-radius:4px">journal-e2e-purchase-flow.md</code> · chat session on 2026-05-14</p>
+  </div>
+  <p class="tiny muted center" style="margin-top:14px">Press <span class="kbd">→</span> to start · <span class="kbd">F</span> fullscreen · <span class="kbd">1-9</span> quick jump</p>
+</section>
+
+<!-- ============ S2 — CONTENTS ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><span class="dot"></span>Contents</div>
+  <h2 class="title">Main sections</h2>
+  <div class="grid grid-2" style="margin-top:14px">
+    <div class="card"><h4>1 · Intro</h4><p>Project context, how Claude Code differs from a regular AI chat, four core concepts.</p><p class="tiny muted" style="margin-top:6px">Slides 3 → 6</p></div>
+    <div class="card"><h4>2 · Phase 1 — Brainstorm</h4><p>19 prompts to explore scope, review the design, open a feature branch.</p><p class="tiny muted" style="margin-top:6px">Slides 6 → 21</p></div>
+    <div class="card"><h4>3 · Phase 2 — Live debug</h4><p>14 prompts running for real on UAT, debugging the Razorpay iframe and the bank popup.</p><p class="tiny muted" style="margin-top:6px">Slides 22 → 32</p></div>
+    <div class="card"><h4>4 · Phase 3 — Polish</h4><p>8 prompts of PR-style review, spotting dead code, pushing back on the design.</p><p class="tiny muted" style="margin-top:6px">Slides 33 → 38</p></div>
+    <div class="card" style="grid-column:span 2"><h4>5 · Wrap-up</h4><p>10 distilled prompt patterns, 5 anti-patterns, a cheat sheet of 5 prompt templates for any situation.</p><p class="tiny muted" style="margin-top:6px">Slides 39 → 41</p></div>
+  </div>
+</section>
+
+<!-- ============ S3 — PROJECT CONTEXT ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><span class="dot"></span>Project context</div>
+  <h2 class="title">Automating one test case across three sites</h2>
+  <div class="split" style="margin-top:14px">
+    <div>
+      <p class="lead">The <code>V1_QA_Automation</code> repo has a Playwright + Page Object Model framework but no E2E spec yet. Test case <code>DD_E2E_TC_001</code> runs across three independent sites.</p>
+      <ul style="margin-top:14px">
+        <li><b>Insurance purchase site (SPP)</b> — customer enters a Philippines phone number, IMEI, plan, pays via Razorpay sandbox.</li>
+        <li><b>Admin</b> — staff verify the order, push it to KYC.</li>
+        <li><b>Customer Portal</b> — customer logs in with OTP, checks the order.</li>
+      </ul>
+    </div>
+    <div class="grid" style="gap:12px">
+      <div class="card"><div class="big-num">3</div><p style="margin-top:2px">Independent sites, different codebases</p></div>
+      <div class="card"><div class="big-num">~90s</div><p style="margin-top:2px">Each E2E run on UAT</p></div>
+      <div class="card"><div class="big-num">42</div><p style="margin-top:2px">User prompts from start to finish</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S4 — CHAT VS AGENT ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><span class="dot"></span>Core concept · 1/2</div>
+  <h2 class="title">Chat tool vs coding agent: change your mindset before your syntax</h2>
+  <p class="ink" style="font-size:17px;max-width:920px;margin:0 0 18px">Before learning how to write prompts, you need to see <b>where Claude Code differs from the tools you use today</b>. ChatGPT/Copilot is an <b>assistant sitting beside you</b> — you ask, it answers, you copy. Claude Code is a <b>colleague that runs inside your machine</b> — it reads files, edits files, runs commands, writes TODOs. The two models are different, so the way you write prompts has to differ too, to fit an agentic workflow.</p>
+  <table style="margin-top:4px">
+    <thead><tr>
+      <th style="width:22%">Aspect</th>
+      <th><span class="tag" style="background:rgba(120,120,140,.14);color:var(--muted)">CHAT TOOL</span><br><span style="font-family:var(--display);font-weight:600;font-size:14px;color:var(--ink);text-transform:none;letter-spacing:0">ChatGPT · Copilot</span></th>
+      <th><span class="tag">CODING AGENT</span><br><span style="font-family:var(--display);font-weight:600;font-size:14px;color:var(--ink);text-transform:none;letter-spacing:0">Claude Code CLI</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td>How you interact</td><td>Context-free chat: you paste code and give a request, it spits code back. No project context.</td><td>An agent running in your terminal that <b>understands project context to read and write files directly.</b></td></tr>
+      <tr><td>Actual output</td><td>A code block in the chat — you have to copy it back.</td><td>Edited files, commits created, tests run — the result lands right in your repo's files.</td></tr>
+      <tr><td>Memory</td><td>Short-term, not coding-specific.</td><td>File system + persistent TODOs — <b>quit and reopen, it's still there</b>.</td></tr>
+      <tr><td>Workflow</td><td>Each answer is free-form, no structure.</td><td>Has <b>skills</b> (reusable workflows) and <b>sub-agents</b> (planner, tester...) that divide the work.</td></tr>
+      <tr><td>Your role</td><td>The one asking questions.</td><td>The one <b>directing, reviewing and deciding</b> — the agent executes.</td></tr>
+    </tbody>
+  </table>
+  <div class="insight"><b>So:</b> a prompt for Claude Code isn't a question — it's an <b>instruction handing work to a skilled colleague who lacks context</b>. Enough context → the agent is precise. Too little → the agent guesses and you clean up the mess.</div>
+</section>
+
+<!-- ============ S5 — FOUR BUILDING BLOCKS ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><span class="dot"></span>Core concept · 2/2</div>
+  <h2 class="title">The four building blocks behind every session</h2>
+  <div class="grid grid-4" style="margin-top:14px">
+    <div class="card"><h4>Skill</h4><p class="ink">A reusable <b>workflow package</b>.</p><p style="margin-top:6px"><code>/morkit:brainstorming</code> opens explore mode. <code>/morkit:writing-plans</code> creates a phased plan before coding.</p></div>
+    <div class="card"><h4>Agent</h4><p class="ink">A <b>specialized alter-ego</b> with its own context.</p><p style="margin-top:6px"><code>planner</code>, <code>tester</code>, <code>code-reviewer</code>, <code>debugger</code> — Claude delegates the work.</p></div>
+    <div class="card"><h4>Plan</h4><p class="ink">A <b>design doc</b> written before you type code.</p><p style="margin-top:6px">One overview <code>plan.md</code> + many detailed <code>phase-XX-*.md</code>.</p></div>
+    <div class="card"><h4>TaskCreate</h4><p class="ink"><b>Persistent TODOs</b> across sessions.</p><p style="margin-top:6px">Quit the terminal and reopen — the TODO is still there. Not chat history.</p></div>
+  </div>
+  <div class="insight">Understand these four and every prompt you write has a clear purpose: <b>trigger a skill, call an agent, create a plan, or update a task</b>.</div>
+</section>
+
+<!-- ============ S6 — P1 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #1</div>
+  <h2 class="title">Opening move</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">~/Documents/Git/DataCultr — claude</span></div>
+    <div class="term-body">
+<div class="term-logo"> ▐▛███▜▌   <b>Claude Code v2.1.141</b>
+▝▜█████▛▘  Opus 4.7 · Claude Team
+  ▘▘ ▝▝    ~/Documents/Git/DataCultr</div>
+      <div class="prompt"><span class="p">❯</span><span class="t">Let's talk in Vietnamese
+
+I want to build an E2E testing flow for one flow, across 3 websites.
+
+Run the skill /morkit:brainstorming to dig into this task with me</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Skill(morkit:brainstorming) loaded.</span>
+
+Entering explore mode. Let's dig into this task.
+A few opening questions:
+1. What are the 3 websites? (same codebase across 3 envs / 3 products / 3 external sites / multi-tenant?)
+2. What flow? (Login? Checkout? Signup?)
+3. How similar are the 3 sites? 4. Stack? 5. Output? 6. Data + auth?
+<span class="mute">Answer whichever you like first.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Three things in one line:</b> language (Vietnamese), a high-level goal (E2E across 3 sites), handing over a skill (<code>/morkit:brainstorming</code>). It frames the work from the very first prompt — Claude knows step one is exploration, not coding.</div>
+</section>
+
+<!-- ============ S8 — P2 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #2</div>
+  <h2 class="title">Answer six questions by six numbers</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — brainstorming</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">1. The 3 websites: Admin, Customer-portal, the insurance purchase site
+2. The flow is already in @DD_TestCases.xlsx
+3. 3 separate sites, completely different logic since they serve different purposes
+4. The stack is in the repo @V1_QA_Automation/
+5. The output must be verifiable against the output in the TestCases file
+6. Data is available, I'll provide it
+
+Also, can we run E2E testing against 3 separate, predefined URLs?</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Reading the repo first, then answering.</span> Read 3 files, listed 1 directory.
+
+<b>Yes.</b> Playwright Projects: one baseURL per project.
+<code>projects: [
+  { name: 'admin',  use: { baseURL: process.env.ADMIN_URL } },
+  { name: 'portal', use: { baseURL: process.env.PORTAL_URL } },
+  { name: 'buy',    use: { baseURL: process.env.BUY_URL } },
+]</code>
+<span class="mute">Current state: Playwright 1.46, TS, POM pattern (src/actions/pageObjects). A single BASE_URL → needs splitting into 3.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Answer by number:</b> whatever Claude asks, you answer by that number. e.g. <code>@DD_TestCases.xlsx</code>, <code>@V1_QA_Automation/</code> point straight at files instead of describing them aloud. A new question is tacked on at the end with "Also…" — not interleaved.</div>
+</section>
+
+<!-- ============ S8.5 — INTERLUDE ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Before Prompt #3 · Claude's follow-up</div>
+  <h2 class="title">Claude keeps asking during brainstorming</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — follow-up questions</span></div>
+    <div class="term-body">
+      <div class="resp"><span class="r">⏺</span><span class="t">Next questions:
+
+<b>1.</b> The <code>DD_TestCases.xlsx</code> file — couldn't attach it yet. I need to know:
+   - Column structure? (TC_ID, Steps, Expected, Site?)
+   - How many cases per site?
+   - "Verify output" = check UI text, API response, or DB state?
+   → Can you paste 2-3 sample rows? Or convert to csv.
+
+<b>2.</b> The 3 specific URLs. Same <code>insurance.mor.com.vn</code> subpath or 3 separate domains?
+
+<b>3.</b> Is the flow <i>one flow across 3 sites</i>, or <i>one flow per site</i>?
+   [Case A] Admin creates product → Portal customer sees it → Buy site purchases (shared state)
+   [Case B] 3 independent flows, sharing only the framework
+
+<b>4.</b> Is login different per site? (admin SSO? portal OTP? buy guest?)
+
+<b>5.</b> Desired folder layout — <code>tests/ui/{admin,portal,buy}/</code> or a single <code>e2e-flow.spec.ts</code> across 3 sites?
+
+<span class="mute">Answer whichever you can first.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>Why this is a problem:</b> Claude fires off <b>5 layered questions</b> right after reading the repo. Each has 3-4 sub-questions. Free-form answers drift, miss things, and lose track of what's still pending. That's exactly why the next prompt is: <i>"Put all the questions into a TODO and let's go through them one at a time."</i></div>
+</section>
+
+<!-- ============ S9 — P3 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #3</div>
+  <h2 class="title">Command the <i>how</i>, not just the <i>what</i></h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — process control</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Put all the questions into a TODO, and let's go through them one at a time</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">TaskCreate: Q1–Q5</span>
+Q1: in-progress · Q2–Q5: pending
+
+TODO done. Starting <b>Q1</b>.
+
+Q1: DD_TestCases.xlsx structure
+Can't attach the .xlsx. Need one of 3 ways:
+Option A — Paste 2-3 sample rows directly
+Option B — Convert to CSV
+Option C — Give me the xlsx path, I'll read it with a tool</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>The <i>process-level instruction</i> pattern:</b> Claude fires 6 questions at once — easy to forget. You command <code>TaskCreate</code> + "one at a time" to lock the order. This is something ChatGPT can't do, because it has no persistent TODO.</div>
+</section>
+
+<!-- ============ S10 — P4 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #4</div>
+  <h2 class="title">Point at resources with <code>@</code>, don't describe them</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — file attach</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Read this CSV file: @DD_TestCases.csv</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Read DD_TestCases.csv (713 lines)</span>
+
+Done. One case <code>DD_E2E_TC_001</code>, Critical, one flow across 3 sites (Case A).
+
+Analysis: Steps 1-3 → Admin (Plan/Band/Creative) · Steps 4-11 → SPP Buy
+Step 12 → Admin search · Expected #9 → Portal login
+
+Test data: Plan E2E_PLN01, Phone +91-9876543210, IMEI 354897123456789, Samsung Galaxy S22 25000 INR.
+<span class="mute">Q1+Q3 done. On to Q2: the 3 URLs.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>The <i>resource pointer</i> pattern:</b> the <code>@&lt;path&gt;</code> notation tells Claude to read that file directly. No copy/paste of content — the agent has access to the real file system.</div>
+</section>
+
+<!-- ============ S11 — P5 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #5</div>
+  <h2 class="title">Resume after <code>/exit</code> — the TODO survives</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — new session</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">/exit</span></div>
+      <div class="resp"><span class="r">⎿</span><span class="t" style="color:var(--term-muted)">Bye!</span></div>
+      <div class="prompt"><span class="p">❯</span><span class="t">Update the TODO — I just exited the session</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">The TODO state is intact — no need to recreate it. Summary:
+
+<b>Locked (1, 2, 3, 8)</b>: test case structure, 3 UAT URLs, one flow across 3 sites, drop Steps 1-3.
+<b>Remaining</b>: Q4 (login), Q5 (folder), Q6 (test data), Q7 (payment).
+
+Next is Q4 — 3 things to answer:
+1. Admin creds + MFA? 2. Buy guest? 3. Portal fixed OTP?</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>The <i>pause/resume awareness</i> pattern:</b> a new session needs just one line — Claude re-reads the TaskCreate, summarizes, and picks up right at the pending question. Completely unlike ChatGPT, which needs the whole context retold.</div>
+</section>
+
+<!-- ============ S12 — P6 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #6</div>
+  <h2 class="title">Provide credentials cleanly, by number</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — Q4 auth</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">1. The admin account has a different password: <code>Admin@234</code>. No MFA, works on UAT
+2. Right, only enter info per the website
+3. Login by phone number. I'll provide a phone number that needs no OTP.</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Q4 done. On to Q5: Folder structure.</span>
+
+2 options for organizing the POM:
+<b>A</b> — split by site: <code>pageObjects/admin/</code> · <code>pageObjects/buy/</code> · <code>pageObjects/portal/</code>
+<b>B</b> — flat, one folder, prefixed names: <code>AdminLoginPage.ts</code>, <code>BuyLandingPage.ts</code>
+<span class="mute">Suggest A for better isolation and easier test-owner splitting.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>A repeating pattern:</b> 3 answers by 3 numbers. The important details (password, OTP rule) go straight into the prompt — not "anything else you need?" first and only then handing them over.</div>
+</section>
+
+<!-- ============ S13 — P7 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #7</div>
+  <h2 class="title">When Claude lays out a menu — pick with one character</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — Q5 folder</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">A</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Chose A: POM split by site.</span>
+
+Next, the second half of Q5: spec file structure.
+<b>1</b> — a single spec <code>purchase-flow.spec.ts</code> running 3 phases serially
+<b>2</b> — 3 separate specs (admin/buy/portal) running independently, sharing a fixture
+<b>3</b> — Hybrid: one orchestrator spec calling per-site sub-specs
+
+<span class="mute">Suggest 1 since this TC is one flow across 3 sites — sharing state is easy.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>The <i>one-letter decision</i> pattern:</b> every round-trip with the agent is <b>cheap</b>. Once the menu is clear, answer "A" / "B" / "C" — the loop moves on immediately, no tokens wasted re-explaining.</div>
+</section>
+
+<!-- ============ S14 — P8 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #8</div>
+  <h2 class="title">Accept a recommendation in plain language</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — accept recommendation</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Just go with your recommendation</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Locking in option 1 — one spec, serial multi-test.</span>
+
+Q5 done. On to <b>Q6: Test data strategy</b>.
+
+Question: phone + IMEI static (fixed in .env) or dynamic (faker-generated each run)?
+- Static: easy to debug, easy to rerun, but easy to collide → the form rejects it
+- Dynamic: avoids collisions, closer to real, but the UAT DB bloats</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>"Just go with your recommendation"</b> — a colloquial accept instead of "Choose option 1". Claude gets it immediately. No need to be fancy.</div>
+</section>
+
+<!-- ============ S15 — P9+P10 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #9 + #10</div>
+  <h2 class="title">Override Claude with domain knowledge</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — Q6 test data</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Phone + IMEI can be dynamic. Using the PH area code is fine
+The code stays fixed as recommended in the Test Case
+Everything else static</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Note: the xlsx says +91 (India) — user switched to +63 (Philippines). Noted.</span>
+3 small things left: log? UAT limit? cleanup endpoint?</span></div>
+      <div class="prompt"><span class="p">❯</span><span class="t">1. Fine
+2. No data limit, but for convenience cap it at 10 runs for now. Expand later
+3. No cleanup endpoint. Can clean up manually. If customer names etc. are left, add an E2E_ prefix for visibility</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Locked: log + <code>E2E_</code> prefix + manual cleanup after ~10 runs. Q6 done. On to Q7 payment.</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>The <i>domain override</i> pattern:</b> the xlsx says +91, you know UAT only accepts +63 → one line, Claude switches immediately. You are the <b>source of truth</b> for business knowledge.</div>
+</section>
+
+<!-- ============ S16 — P11 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #11</div>
+  <h2 class="title">Answer Q7 Payment — just enough, nothing extra</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — Q7 payment</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">1. Per the code structure it's using Razorpay. Use the Razorpay test card 4100 2800 0000 1007
+2. There's a sandbox
+4. Popup, it has to be.</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Closing Q7. Brainstorm wrap-up:</span>
+<b>7/7 questions locked.</b> Site map, auth, folder, spec, data strategy, payment all covered.
+
+3 next-steps:
+<b>1</b> — <code>/morkit:propose</code> generates the full artifacts
+<b>2</b> — Implement directly, skip propose
+<b>3</b> — Save the design log, stop here</span></div>
+    </div>
+  </div>
+  <div class="insight">Skips item 3 because Claude infers it. Skips the irrelevant question. <b>"Popup, it has to be."</b> — 3 words is enough for "the modal pops up, it's not a redirect page".</div>
+</section>
+
+<!-- ============ S17 — P12+P13 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #12 + #13</div>
+  <h2 class="title">Two "1"s in a row — chaining skills back to back</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — propose + scaffold</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">1</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Skill(morkit:propose) loaded.</span>
+2 scaffold-path options:
+<b>1</b> — <code>V1_QA_Automation/morkit/output/spec/...</code> (in the sub-repo)
+<b>2</b> — <code>DataCultr/morkit/...</code> (root repo)</span></div>
+      <div class="prompt"><span class="p">❯</span><span class="t">1</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Created 4 files: <code>proposal.md</code>, <code>design.md</code>, <code>tasks.md</code>, <code>.meta.json</code>.
+Auto-called <code>/morkit:review</code> → generated <code>review-checklist.md</code> (Overall Decision: PENDING).
+<span class="mute">A hook will block /morkit:executing-plans until it flips to OK.</span></span></div>
+    </div>
+  </div>
+  <div class="insight">When clear menus come back to back, "1" + "1" = advancing two rounds. But <b>careful</b>: if you're not sure on the second one, stop and read the menu — don't "1" out of habit.</div>
+</section>
+
+<!-- ============ S18 — P14 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #14</div>
+  <h2 class="title">Review the artifact: two specific edits, plus a checklist status</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — artifact edit</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">1. Proposal: the code used is E2E_PLN01, not LISA
+2. The test flow should be annotated as a high-level flow, since there will be plenty of little things to handle when actually running the E2E flow. We'll deal with them gradually with the developer when coding starts.
+
+Already updated the checklist</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Updated 3 files:
+<div class="diff-line del">- BUY_CAMPAIGN_CODE=LISA</div>
+<div class="diff-line add">+ BUY_CAMPAIGN_CODE=E2E_PLN01</div>
+<b>+ "Scope caveat"</b> at the top of design.md — code snippets are illustrative, not final.
+<b>+ NOTE</b> at the top of tasks.md — selectors/waits/quirks will be resolved gradually in Phase 4.
+
+<span class="mute">You ticked the checklist yourself → I won't touch that file.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>The <i>numbered review</i> pattern shows up early:</b> 2 specific numbered edits + 1 status note ("Already updated the checklist"). The structure is exactly like a PR review comment.</div>
+</section>
+
+<!-- ============ S19 — P15+P16 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #15 + #16</div>
+  <h2 class="title">Walk each unchecked item — then confirm done</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — checklist walk</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Let's resolve the unchecked items together</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">2 unchecked items:
+<b>S1</b>: Proposal matches DD_E2E_TC_001 → compared xlsx vs proposal step by step (12/12 match). Suggest ticking.
+<b>S2</b>: Dynamic phone/IMEI + E2E_ prefix acceptable to QA team? → this one needs a human to decide.</span></div>
+      <div class="prompt"><span class="p">❯</span><span class="t">updated it</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">All ticked green ✅. <b>Overall Decision: OK</b> → the hook has unblocked the implementation skills.
+Next-step: <b>1</b> /morkit:executing-plans · <b>2</b> /morkit:subagent-driven-development · <b>3</b> Code directly from Phase 0.</span></div>
+    </div>
+  </div>
+  <div class="insight">"Together" signals walk through each item, not "do it all yourself". <b>"updated it"</b> = the human confirms + asks Claude to re-read the file. Terse but enough.</div>
+</section>
+
+<!-- ============ S20 — P17 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #17</div>
+  <h2 class="title">Open implementation — with a single "1"</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — start implement</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">1</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Skill(morkit:executing-plans) loaded.</span>
+Pre-flight check: Overall Decision = OK ✓ · git repo ✓ · tasks.md present ✓.
+
+<span class="em">⚠ Warning:</span> you're on branch <b>main</b>. The skill requires not implementing directly on main.
+3 ways: <b>1</b> Create a feature branch · <b>2</b> Create a git worktree · <b>3</b> Work on main anyway (not recommended).</span></div>
+    </div>
+  </div>
+  <div class="insight">The <code>executing-plans</code> skill runs its own pre-flight: checks the review-checklist, checks the git branch. If you're on main, it stops — an <b>automatic human gate</b>.</div>
+</section>
+
+<!-- ============ S21 — P18+P19 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 1 · BRAINSTORM</b> · Prompt #18 + #19</div>
+  <h2 class="title">Create the branch — and know when to stop</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — branch + build offline</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Create a feature branch</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">git checkout -b feat/e2e-purchase-flow</span> ✓
+Built Phase 0/1/2/3/4/5/6 from tasks.md: env, playwright.config, 2.2MB jpg fixture,
+7 unit tests (testData, runLogger) ALL GREEN, POM skeleton, Razorpay helper, spec, cleanup README.
+Phase 4 live-verify flag for the developer. 24 files, +1582 LOC.
+3 finishing options: <b>1</b> Merge now · <b>2</b> Create a PR · <b>3</b> Keep the branch, finish later</span></div>
+      <div class="prompt"><span class="p">❯</span><span class="t">3</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Reporting state + resume command:
+<code>cd V1_QA_Automation
+npx playwright test --project=e2e-purchase --headed --workers=1</code></span></div>
+    </div>
+  </div>
+  <div class="insight">Phase 1 closes cleanly: branch created, offline build done, live-verify left for later (Phase 2 will do it). "3" = don't rush a merge, don't open a PR early — <b>keep the checkpoint, move on when ready</b>.</div>
+</section>
+
+<!-- ============ S22 — P20 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #20</div>
+  <h2 class="title">Open Phase 2 — run for real, review together</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — first real run</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">OK, let's try a real run. I'll review and run alongside you</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Running headed + slowMo so we can watch each action together.
+<span class="em">Bash:</span> <code>HEADLESS=false SLOW_MO=300 ... -g "Phase 1"</code>
+<span class="em">Error:</span> Playwright hasn't installed the browser binary → auto-installs Chromium → rerun.
+
+<span class="em">Progress!</span> Past the landing, into Phone Entry. Stuck because "Buy Now" is disabled. Screenshot:
+✅ Landing pass  ✅ Mobile Price 25000  ❌ Error "Enter a valid price between and" (missing min/max)
+❌ Country code IN +91 (default), not PH +63</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>"I'll review and run alongside you"</b> — announcing up front that this is collaborative debugging. Claude turns on headed + slowMo so you can see the browser, no silent retries.</div>
+</section>
+
+<!-- ============ S23 — P21 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #21</div>
+  <h2 class="title">Human observation: "I don't see a browser"</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — env var bug</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">I'm not seeing any browser open up</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">The <code>--headed</code> flag may be clearer than <code>HEADLESS=false</code> (the env var may not pass through the rtk proxy). Trying again.
+
+<span class="em">Bash:</span> <code>SLOW_MO=800 npx playwright test --project=e2e-purchase -g "Phase 1" --headed --workers=1</code></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>The <i>manual observation</i> pattern:</b> Claude says "test passed" but you actually see "no browser" → report it immediately. One observed sentence is worth more than 10 log lines — the agent changes tactics in 5 seconds.</div>
+</section>
+
+<!-- ============ S24 — P22+P23 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #22 + #23</div>
+  <h2 class="title">When the agent loops on selectors — pull it back to first principles</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — back to concerns</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Looks like it's timing out at the info-entry stage => couldn't click submit
+
+Go back to the concerns you raised earlier</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">3 concerns I need you to confirm:
+<b>1.</b> Code E2E_PLN01 — Plan code or Creative code?
+   The landing loads but the pricing band is empty → maybe PLN01 isn't linked.
+<b>2.</b> Country code PH (+63) vs IN (+91)? The form defaults to IN.
+<b>3.</b> Is the empty pricing band a data bug or a code bug?
+<span class="mute">Answer the 3 and I'll know the fix direction.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>The <i>back to first-principles</i> pattern:</b> an observation ("timeout at X") + a command ("go back to the earlier concerns") = reopening the context the agent just forgot. Avoid fixing the <i>symptom</i>, dig back to the <i>root cause</i>.</div>
+</section>
+
+<!-- ============ S25 — P24 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #24</div>
+  <h2 class="title">Answer 3 concerns in 3 lines</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — UAT answers</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">1. Fixed the plan to match the test case spec
+2. Always switch to the PH code
+3. The pricing band is active now. Check again</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Updating <code>PhoneEntryPage</code> to pick the PH country code from the dropdown before entering the phone.
+<span class="em">Form layout (verified on UAT 2026-05-12):</span>
+- Currency display (disabled) + Mobile Price
+- combobox (country code, default "IN +91") + Phone Number
+- button "Buy Now" (enabled once both valid)</span></div>
+    </div>
+  </div>
+  <div class="insight">No need to explain "why I changed it" — straight to work. The numbered-review principle: <b>one line per concern</b>, enough info for Claude to unblock.</div>
+</section>
+
+<!-- ============ S26 — P25 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #25</div>
+  <h2 class="title">Pump the brakes — "Why are you stuck?"</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — explain stuck</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Why are you stuck at the payment step?</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Stuck because I can't identify the right Razorpay iframe. The popup opens fine but:
+The test code looks for the iframe (name="razorpay-checkout-frame", src*="razorpay", …). No match → empty frame → 180s timeout.
+
+3 ways to know for sure:
+<b>A.</b> A debug log dumping every iframe name/src · <b>B.</b> <code>--debug</code> mode Inspector
+<b>C.</b> You open Razorpay manually + DevTools (F12) → copy the iframe outerHTML → paste it to me (fastest)</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>The <i>why stuck?</i> pattern:</b> the agent is blind-retrying 4-5 times. You force Claude to state the failure mode first. Result: Claude lays out 3 debug paths — you just pick C.</div>
+</section>
+
+<!-- ============ S27 — P26+P27 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #26 + #27</div>
+  <h2 class="title">Human eyes + DOM = one line that saves 30 minutes</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — DevTools method</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">C</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Fast way — run this in the DevTools Console of the Razorpay popup:
+<code>document.querySelectorAll('iframe').forEach((f, i) =&gt;
+  console.log(i, 'name=', f.name, '| src=', f.src, '| class=', f.className))</code>
+Copy the output → paste it to me.</span></div>
+      <div class="prompt"><span class="p">❯</span><span class="t">[Image #1]
+
+Here are the 3 console logs.</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Good — the Razorpay iframe: <code>name=""</code> (empty — why the old selector failed) ·
+<code>src="https://api.razorpay.com/v1/checkout/public?..."</code> · <code>class="razorpay-checkout-frame"</code>
+Updating the selector to prefer a class match.
+<div class="diff-line del">- 'iframe[name="razorpay-checkout-frame"]',</div>
+<div class="diff-line add">+ 'iframe.razorpay-checkout-frame',</div>
+<div class="diff-line add">+ 'iframe[src*="razorpay.com/v1/checkout"]',</div></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>The <i>read DOM, not logs</i> pattern:</b> an error log only says "it broke". The DOM says "why it broke". Pasting one line of real attributes was the single biggest accelerator in Phase 2.</div>
+</section>
+
+<!-- ============ S28 — P28 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #28</div>
+  <h2 class="title">Add the missing step from manual observation</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — cards click</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">The payment popup opens fine, but you have to click "Card" before you can enter the card details</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Update: must click <b>Cards</b> (not conditional), wait for the card-number input to appear.
+<span class="em">Razorpay modal defaults to UPI QR. Must click "Cards" in the left payment-methods list before any card form renders.</span>
+<div class="diff-line del">- if (await cardOpt.isVisible(...)) await cardOpt.click();</div>
+<div class="diff-line add">+ await cardOpt.waitFor({ state: 'visible', timeout: 15_000 });</div>
+<div class="diff-line add">+ await cardOpt.click();</div></span></div>
+    </div>
+  </div>
+  <div class="insight">You see a UI step the spec never mentions — report it verbatim. Claude turns the click from optional into mandatory. <b>Human eyes over assumptions</b>.</div>
+</section>
+
+<!-- ============ S29 — P29+P30+P31 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #29 + #30 + #31</div>
+  <h2 class="title">Pause — commit checkpoint — keep going</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — pause cluster</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Let's pause, I'll continue tomorrow</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Stopping here. State for tomorrow: Phase 1 already goes landing → phone → consent → Razorpay → bank simulator → /device-details. Currently fixing DeviceUploadPage (7 more fields).
+<span class="mute">Suggest a commit checkpoint: <code>git add -A &amp;&amp; git commit -m "wip: e2e phase 1 reaches device-details"</code></span></span></div>
+      <div class="prompt"><span class="p">❯</span><span class="t">commit checkpoint</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Commit <code>33ca2d9</code> on branch <code>feat/dd-e2e-tc001-purchase-flow</code>. 24 files, +1582 LOC.</span></div>
+      <div class="prompt"><span class="p">❯</span><span class="t">Keep going for me</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Rerunning Phase 1 headed. The "Brand *" label has an asterisk → <code>getByText(/^brand$/i)</code> exact match fails. Loosen the regex → <code>getByPlaceholder(/samsung|apple|xiaomi/i)</code>.</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>The <i>pause/resume awareness</i> pattern:</b> 3 very short prompts for a whole day of work. The context lives in files (TODO, code, plan) — the session is just a control window.</div>
+</section>
+
+<!-- ============ S30 — P32 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #32</div>
+  <h2 class="title">Switch the run strategy — one sentence is enough</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — headless mode</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">From now on, run headless</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">OK, headless mode from now on.
+<span class="em">Bash:</span> <code>npx playwright test --project=e2e-purchase -g "Phase 1" --reporter=list --workers=1</code>
+
+<span class="mute">Headless runs faster — the Razorpay iframe hasn't attached yet. Adding poll-with-deadline.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>"From now on"</b> = an instruction that applies to every subsequent run. No need to repeat it each time. The agent remembers it within the session.</div>
+</section>
+
+<!-- ============ S31 — P33 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #33</div>
+  <h2 class="title">Pre-empt a flaky pattern — a popup that may not appear</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — optional modal</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">That RBI "Save your card?" popup — can we make it optional? It may or may not show up</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">On the RBI popup: <b>already optional</b> — <code>if (await rbiSkip.isVisible({timeout: 5000}).catch(() =&gt; false))</code>. Shows or not, both fine, not blocking.
+
+<span class="em">New bug found:</span> the Razorpay sandbox has no OTP but a <b>bank simulator</b> with 2 buttons, Success / Failure. Must click Success. May render in the iframe or on the parent page.</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>The <i>conditional UI</i> pattern:</b> you predict the popup will be flaky. Tell Claude to handle it as optional from the start — don't wait to hit the flake before fixing. Saves a debug round.</div>
+</section>
+
+<!-- ============ S32 — P34 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 2 · LIVE DEBUG</b> · Prompt #34</div>
+  <h2 class="title">Close out the phase — commit + export the run guide</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — feature complete</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Commit, then send me a manual run guide for this test case</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">Commit <code>9fd684b</code>: feat — e2e purchase flow all 3 phases passing on UAT. 6 files, +272 -57.
+
+<span class="em">Manual Run Guide:</span>
+Prerequisites: <code>npm install</code> · <code>npx playwright install chromium</code>
+Env: <code>ADMIN_*</code>, <code>BUY_*</code>, <code>PORTAL_*</code>, <code>RAZORPAY_TEST_CARD</code>
+Run: <code>npx playwright test --project=e2e-purchase</code> (~90s)
+Cleanup: filter <code>E2E_</code> in Admin → mass-delete
+<span class="mute">+ HTML report, troubleshooting, file map.</span></span></div>
+    </div>
+  </div>
+  <div class="insight"><b>"Commit, then send me a manual run guide"</b> — two actions in one sentence. The agent does both in sequence. No need for 2 separate prompts.</div>
+</section>
+
+<!-- ============ S33 — P35 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 3 · POLISH</b> · Prompt #35</div>
+  <h2 class="title">PR-review style — four points, four fixes</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — numbered review</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">1. The prerequisites part — can we add it to the repo README, or does installing Playwright install everything for us already?
+2. Better to ship an env.example file instead of committing .env.dev. Remember to ignore .env* to avoid committing it.
+3. This command — can we change the project to the Test Case's code? npx playwright test --project=e2e-purchase. Remember to put it in the README
+4. Have you run the cleanup part yet?
+
+Export your run guide into a .md file</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><b>1.</b> <code>npm install</code> doesn't auto-install the browser. Need <code>npx playwright install</code> separately. Adding to README.
+<b>2.</b> Created <code>.env.example</code> + added <code>.env*</code> to .gitignore + <code>git rm --cached .env.dev</code>.
+<b>3.</b> Project <code>e2e-purchase</code> → renamed <code>DD_E2E_TC_001</code>.
+<b>4.</b> UAT cleanup — not run yet. ~17 E2E_ customers in the DB. Needs to be done manually.
+Writing <code>tests/ui/e2e/RUN_GUIDE.md</code>.</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>The <i>numbered review</i> pattern at its peak:</b> 4 numbered points like PR review comments. Claude responds point by point, no mix-ups. The "export" action is tacked on at the end — same handling round.</div>
+</section>
+
+<!-- ============ S34 — P36 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 3 · POLISH</b> · Prompt #36</div>
+  <h2 class="title">Relocate an artifact — one sentence does it</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — move file</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Move that guide file to the repo root</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Bash:</span> <code>git mv tests/ui/e2e/RUN_GUIDE.md RUN_GUIDE.md</code>
+Updated the README link: <code>[tests/ui/e2e/RUN_GUIDE.md] → [RUN_GUIDE.md]</code>.
+Commit <code>dde6702</code>: docs — move RUN_GUIDE.md to repo root.</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>One colloquial sentence</b> = Claude knows the target immediately ("that guide file") from the recent context. <code>git mv</code> preserves history, the README link auto-updates.</div>
+</section>
+
+<!-- ============ S35 — P37 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 3 · POLISH</b> · Prompt #37</div>
+  <h2 class="title">Report a runtime error — paste it verbatim</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — runtime error</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Running this command returns an error
+
+HEADLESS=false SLOW_MO=300 npx playwright test --project=DD_E2E_TC_001 --headed --workers=1
+
+Error: Project(s) "DD_E2E_TC_001" not found. Available projects: ""</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">Diagnose:</span> "Available projects: ''" = config loads OK but projects is empty.
+Path <code>~/.npm/_npx/e41f203b7505f1fb/...</code> = npx is using a <b>cache</b>, not the local <code>node_modules</code>.
+
+<span class="em">Fix:</span> use <code>./node_modules/.bin/playwright</code> or add <code>npm run</code> scripts pointing at the local binary.
+Update <code>package.json</code>: <code>test:e2e</code>, <code>test:e2e:headed</code>, <code>test:e2e:debug</code>.
+Doc warning in RUN_GUIDE: avoid <code>npx playwright</code> because of cache resolution.</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>The <i>paste exact error</i> pattern:</b> not "it won't run", not "there's an error" — paste the exact command + error message. Claude diagnoses precisely in one round.</div>
+</section>
+
+<!-- ============ S36 — P38+P39 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 3 · POLISH</b> · Prompt #38 + #39</div>
+  <h2 class="title">Push back on architecture — "can it be simpler?"</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — design pushback</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">The package.json scripts are written to run just one test case. What if I add more test cases later?
+
+Is there a way to run all the projects with playwright?</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">User's point is right — hardcoding the TC ID into the project name doesn't scale. 3 options:
+<b>A</b> — one "E2E" project, many specs (recommended)
+<b>B</b> — per-TC project + glob <code>--project=DD_E2E_*</code>
+<b>C</b> — Tag-based <code>@TC001</code></span></div>
+      <div class="prompt"><span class="p">❯</span><span class="t">Or in package.json just drop --project=*, and in RUN_GUIDE write instructions to run all projects, or run each project individually</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">OK. Simplify the scripts + docs. Drop the project filter, let the docs teach people to run <code>--project=&lt;name&gt;</code> when needed.
+Need to fix: the UI project has <code>testDir: 'tests'</code> which includes E2E → add <code>testIgnore: 'ui/e2e/**'</code> to avoid running it twice.</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>The <i>simpler alternative</i> pattern:</b> Claude lays out 3 options, you give a 4th that's simpler than all 3. <b>Simple beats complex</b> — fighting over-engineering.</div>
+</section>
+
+<!-- ============ S37 — P40 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 3 · POLISH</b> · Prompt #40</div>
+  <h2 class="title">Spot dead code — attach an image + ask the precise question</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — dead code spot</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">I see this snippet in the env: [Image #3]
+
+This looks obsolete for my test case. Is there any flow currently testing it?</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t"><span class="em">grep -r ...</span> Not obsolete for the repo, but obsolete for DD_E2E_TC_001.
+<b>BASE_URL</b> ✅ playwright.config.ts:33 + legacy login POM
+<b>API_URL</b> ❌ dead var — the code reads <code>API_BASE_URL</code> (different name)
+<b>AUTO_USERNAME / AUTO_USER_PASSWORD</b> ✅ 10 legacy UI specs use them
+
+3 options: A keep + a "Legacy" section · B drop the legacy section · C verify whether the legacy specs still run.</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>The <i>spot dead code</i> pattern:</b> "looks obsolete" + "is any flow testing it" = a precise question. Claude greps to verify, builds a table, proposes 3 options. <b>Trust but verify</b>.</div>
+</section>
+
+<!-- ============ S38 — P41 ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><b>PHASE 3 · POLISH</b> · Prompt #41</div>
+  <h2 class="title">Defer — you hold the coordination control</h2>
+  <div class="term">
+    <div class="term-bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="t">claude — defer task</span></div>
+    <div class="term-body">
+      <div class="prompt"><span class="p">❯</span><span class="t">Skip it for now, don't do anything. I have another request to modify test case DD_E2E_TC_001</span></div>
+      <div class="resp"><span class="r">⏺</span><span class="t">OK. What's the request?</span></div>
+    </div>
+  </div>
+  <div class="insight"><b>The <i>defer &amp; redirect</i> pattern:</b> Claude is waiting for you to pick A/B/C, you defer + switch to a new task. The agent lets go immediately, doesn't try to persuade. <b>Control flow is yours, not the agent's</b>.</div>
+</section>
+
+<!-- ============ S39 — 10 PATTERNS ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><span class="dot"></span>Wrap-up · 1/3</div>
+  <h2 class="title">10 prompt patterns distilled from 42 turns</h2>
+  <table style="margin-top:10px">
+    <thead><tr><th style="width:32px">#</th><th style="width:32%">Pattern</th><th>Condensed example from this session</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><b>3-in-1 opener</b> (language + goal + skill)</td><td>"Let's talk in Vietnamese. I want to… Run the skill <code>/morkit:brainstorming</code>"</td></tr>
+      <tr><td>2</td><td><b>Numbered answers / numbered review</b></td><td>"1. … 2. … 3. … Also: …"</td></tr>
+      <tr><td>3</td><td><b>One-letter decision</b> when there's a menu</td><td>"A", "1", "C", "OK"</td></tr>
+      <tr><td>4</td><td><b>Process-level instruction</b></td><td>"Put it in a TODO, go one at a time"</td></tr>
+      <tr><td>5</td><td><b>Resource pointer</b> <code>@&lt;file&gt;</code></td><td>"Read this CSV file: <code>@DD_TestCases.csv</code>"</td></tr>
+      <tr><td>6</td><td><b>Domain override</b> — you're the business truth</td><td>"Phone + IMEI can be dynamic. Use the PH area code"</td></tr>
+      <tr><td>7</td><td><b>Why stuck?</b> — block blind retries</td><td>"Why are you stuck at the payment step?"</td></tr>
+      <tr><td>8</td><td><b>Back to first-principles</b></td><td>"Go back to the concerns you raised earlier"</td></tr>
+      <tr><td>9</td><td><b>Read DOM, not logs</b></td><td>Paste the Razorpay iframe attributes from DevTools</td></tr>
+      <tr><td>10</td><td><b>Pause / Resume awareness</b></td><td>"Pause", "commit checkpoint", "Keep going"</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ S40 — ANTI-PATTERNS ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><span class="dot"></span>Wrap-up · 2/3</div>
+  <h2 class="title">Habits to drop when moving from ChatGPT</h2>
+  <div class="grid grid-2" style="margin-top:14px">
+    <div class="card"><h4>1 · Rambling prompts when there's already a menu</h4><p>Claude already listed 3 clear options — writing two paragraphs of explanation just burns tokens. One character is enough.</p></div>
+    <div class="card"><h4>2 · "Fix all the errors"</h4><p>Vague. Paste the command + the exact error, point to the file/line. Trust but verify.</p></div>
+    <div class="card"><h4>3 · Not reading the screenshot / DOM</h4><p>Retrying over and over when the real DOM is 30 seconds away in DevTools. Human eyes beat logs.</p></div>
+    <div class="card"><h4>4 · Mixing Plan and Implement</h4><p>Asking Claude to design and code in one prompt = both come out poorly. Separate the phases: brainstorm → propose → review → cook.</p></div>
+    <div class="card" style="grid-column:span 2"><h4>5 · No "commit checkpoint" when pausing</h4><p>Closing the window mid-way without a commit = retelling the context tomorrow. One "commit checkpoint" saves 15 minutes of restart.</p></div>
+  </div>
+</section>
+
+<!-- ============ S41 — CHEAT SHEET ============ -->
+<section class="slide" data-lang="en">
+  <div class="eyebrow"><span class="dot"></span>Wrap-up · 3/3 · Cheat sheet</div>
+  <h2 class="title">Five prompt templates to use right away</h2>
+  <div class="grid grid-2" style="margin-top:10px">
+    <div class="card">
+      <h4>1 · Start a new task</h4>
+      <pre style="margin:4px 0 0;font-family:var(--mono);font-size:13px;background:transparent;color:var(--ink);white-space:pre-wrap">Let's talk in Vietnamese.
+Goal: &lt;one sentence&gt;.
+Context: @&lt;file&gt;, @&lt;repo&gt;.
+Run the skill /morkit:brainstorming.</pre>
+    </div>
+    <div class="card">
+      <h4>2 · Answer multiple questions</h4>
+      <pre style="margin:4px 0 0;font-family:var(--mono);font-size:13px;background:transparent;color:var(--ink);white-space:pre-wrap">1. &lt;answer Q1&gt;
+2. &lt;answer Q2&gt;
+3. &lt;answer Q3&gt;
+Also: &lt;new question&gt;</pre>
+    </div>
+    <div class="card">
+      <h4>3 · Block blind retries</h4>
+      <pre style="margin:4px 0 0;font-family:var(--mono);font-size:13px;background:transparent;color:var(--ink);white-space:pre-wrap">Why are you stuck at &lt;step&gt;?
+Explain the failure mode first,
+don't retry the selector right away.</pre>
+    </div>
+    <div class="card">
+      <h4>4 · Push back on a design</h4>
+      <pre style="margin:4px 0 0;font-family:var(--mono);font-size:13px;background:transparent;color:var(--ink);white-space:pre-wrap">Your proposed approach is complex.
+Is there a simpler option?
+e.g. drop &lt;X&gt;, let the docs teach people.</pre>
+    </div>
+    <div class="card" style="grid-column:span 2">
+      <h4>5 · Pause &amp; resume</h4>
+      <pre style="margin:4px 0 0;font-family:var(--mono);font-size:13px;background:transparent;color:var(--ink);white-space:pre-wrap"># end of day
+commit checkpoint
+
+# next morning
+Keep going for me. Update the TODO — I just exited the session.</pre>
+    </div>
+  </div>
+  <p class="lead muted center" style="margin-top:14px;font-style:italic">AI does the boilerplate. Humans do the judgment. Short prompts work when the previous turn already made the menu clear.</p>
+  <p class="tiny muted center" style="font-family:var(--mono);letter-spacing:.04em">End — DataCultr · V1_QA_Automation · <code>journal-e2e-purchase-flow.md</code></p>
+</section>
+
 </main>
 
 <script>
 (function(){
-  var slides = document.querySelectorAll('.slide');
-  var total = slides.length;
-  var cur = 0;
+  var allSlides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
   var progress = document.getElementById('progress');
-  var curEl = document.getElementById('cur');
   var snumEl = document.getElementById('snum');
   var counter = document.querySelector('.nav .counter');
-  // Update counter total since deck is 41 slides
-  counter.innerHTML = '<span id="cur">1</span> / ' + total;
-  curEl = document.getElementById('cur');
+  var prevBtn = document.getElementById('prev');
+  var nextBtn = document.getElementById('next');
+
+  var STR = {
+    vi: { light:'Sáng', dark:'Tối', system:'Hệ thống', prev:'Slide trước', next:'Slide sau',
+          title:'Quy trình áp dụng thử AI Workflow cho E2E_TC001 · 41 slide từ một dự án E2E thật' },
+    en: { light:'Light', dark:'Dark', system:'System', prev:'Previous slide', next:'Next slide',
+          title:'Trialing an AI workflow for E2E_TC001 · 41 slides from a real E2E project' }
+  };
+
+  var lang = localStorage.getItem('cc-deck-lang');
+  if(lang!=='vi' && lang!=='en') lang='en';
+  var slides = [];
+  var cur = 0;
 
   function pad(n){return n<10?'0'+n:''+n;}
+
+  function refreshSlides(){
+    slides = allSlides.filter(function(s){return s.getAttribute('data-lang')===lang;});
+  }
+
   function show(i){
-    if(i<0) i=0; if(i>=total) i=total-1;
-    slides.forEach(function(s){s.removeAttribute('data-active');});
-    slides[i].setAttribute('data-active','');
+    if(i<0) i=0; if(i>=slides.length) i=slides.length-1;
+    allSlides.forEach(function(s){s.removeAttribute('data-active');});
+    if(slides[i]) slides[i].setAttribute('data-active','');
     cur=i;
+    var total=slides.length;
     progress.style.width = ((i+1)/total*100)+'%';
-    curEl.textContent = (i+1);
+    var curEl=document.getElementById('cur');
+    if(curEl) curEl.textContent = (i+1);
     snumEl.textContent = pad(i+1)+' / '+pad(total);
     try{ history.replaceState(null,'','#'+(i+1)); }catch(e){}
   }
   function next(){show(cur+1);}
   function prev(){show(cur-1);}
-  document.getElementById('next').addEventListener('click',next);
-  document.getElementById('prev').addEventListener('click',prev);
+
+  function applyLangChrome(){
+    var L = STR[lang];
+    document.documentElement.lang = lang;
+    document.title = L.title;
+    prevBtn.setAttribute('aria-label', L.prev);
+    nextBtn.setAttribute('aria-label', L.next);
+    document.querySelectorAll('.theme button').forEach(function(b){
+      var t=b.dataset.theme;
+      if(L[t]) b.textContent = L[t];
+    });
+    document.querySelectorAll('.lang button').forEach(function(b){
+      b.classList.toggle('active', b.dataset.lang===lang);
+    });
+  }
+
+  function setLang(target, keepIndex){
+    if(target!==lang){
+      lang = target;
+      localStorage.setItem('cc-deck-lang', lang);
+    }
+    refreshSlides();
+    counter.innerHTML = '<span id="cur">'+(keepIndex+1)+'</span> / ' + slides.length;
+    applyLangChrome();
+    show(Math.min(keepIndex, slides.length-1));
+  }
+
+  refreshSlides();
+  counter.innerHTML = '<span id="cur">1</span> / ' + slides.length;
+  applyLangChrome();
+
+  nextBtn.addEventListener('click',next);
+  prevBtn.addEventListener('click',prev);
+  document.querySelectorAll('.lang button').forEach(function(b){
+    b.addEventListener('click',function(){ setLang(b.dataset.lang, cur); });
+  });
+
   document.addEventListener('keydown',function(e){
     if(e.target && /input|textarea/i.test(e.target.tagName)) return;
     switch(e.key){
       case 'ArrowRight': case 'PageDown': case ' ': case 'l': next(); e.preventDefault(); break;
       case 'ArrowLeft': case 'PageUp': case 'h': prev(); e.preventDefault(); break;
       case 'Home': show(0); break;
-      case 'End': show(total-1); break;
+      case 'End': show(slides.length-1); break;
       case 'f': case 'F':
         if(document.fullscreenElement){document.exitFullscreen();} else {document.documentElement.requestFullscreen();}
         break;
     }
     if(/^[0-9]$/.test(e.key)){
       var idx = parseInt(e.key,10);
-      if(idx>0 && idx<=total) show(idx-1);
+      if(idx>0 && idx<=slides.length) show(idx-1);
     }
   });
+
   var h = parseInt((location.hash||'').replace('#',''),10);
-  if(!isNaN(h) && h>=1 && h<=total){ show(h-1); } else { show(0); }
+  if(!isNaN(h) && h>=1 && h<=slides.length){ show(h-1); } else { show(0); }
+
   var startX=null;
   document.addEventListener('touchstart',function(e){startX=e.touches[0].clientX;},{passive:true});
   document.addEventListener('touchend',function(e){
@@ -1072,7 +1995,8 @@ Chạy tiếp giúp tôi. Cập nhật lại TODO đi, tôi vừa thoát session
     if(Math.abs(dx)>50){ dx<0?next():prev(); }
     startX=null;
   });
-  var saved = localStorage.getItem('cc-deck-theme') || 'system';
+
+  var savedTheme = localStorage.getItem('cc-deck-theme') || 'system';
   function applyTheme(t){
     if(t==='system'){ document.documentElement.removeAttribute('data-theme'); }
     else { document.documentElement.setAttribute('data-theme',t); }
@@ -1084,7 +2008,7 @@ Chạy tiếp giúp tôi. Cập nhật lại TODO đi, tôi vừa thoát session
   document.querySelectorAll('.theme button').forEach(function(b){
     b.addEventListener('click',function(){ applyTheme(b.dataset.theme); });
   });
-  applyTheme(saved);
+  applyTheme(savedTheme);
 })();
 </script>
 </body>
